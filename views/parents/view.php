@@ -1,6 +1,8 @@
 <?php
 
 use app\models\Parents;
+use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
@@ -8,6 +10,8 @@ use yii\widgets\DetailView;
 ?>
 
 <div class="parent-view">
+    <h6 class="mb-3">Parent Profile</h6>
+
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -53,4 +57,42 @@ use yii\widgets\DetailView;
             ],
         ],
     ]) ?>
+
+    <div class="mt-4">
+        <h6 class="mb-2">Linked Students</h6>
+        <?php if (!empty($model->studentParents)) : ?>
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th style="width: 60px;">#</th>
+                            <th>Student</th>
+                            <th>Relationship</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($model->studentParents as $index => $link) : ?>
+                            <tr>
+                                <td><?= (int) $index + 1 ?></td>
+                                <td>
+                                    <?php if ($link->student !== null) : ?>
+                                        <?= Html::a(
+                                            Html::encode($link->student->getFullName()),
+                                            Url::to(['students/profile', 'id' => $link->student_id]),
+                                            ['target' => '_blank', 'rel' => 'noopener']
+                                        ) ?>
+                                    <?php else : ?>
+                                        -
+                                    <?php endif; ?>
+                                </td>
+                                <td><?= Html::encode($link->getRelationshipLabel()) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php else : ?>
+            <div class="text-muted">No students are currently linked to this parent.</div>
+        <?php endif; ?>
+    </div>
 </div>

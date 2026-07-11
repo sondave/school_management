@@ -1,20 +1,18 @@
 <?php
 
-declare(strict_types=1);
+namespace app\controllers\settings;
 
-namespace app\controllers;
-
+use app\models\settings\SmsTemplate;
+use app\models\settings\SmsTemplateSearch;
 use Yii;
-use app\models\Parents;
-use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
-class ParentsController extends Controller
+class SmsTemplateController extends Controller
 {
-    public function behaviors(): array
+    public function behaviors()
     {
         return array_merge(
             parent::behaviors(),
@@ -29,46 +27,33 @@ class ParentsController extends Controller
         );
     }
 
-    public function actionIndex(): string
+    public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Parents::find()->orderBy(['id' => SORT_DESC]),
-            'pagination' => [
-                'pageSize' => 20,
-            ],
-        ]);
+        $searchModel = new SmsTemplateSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
-    public function actionView(int $id): string
+    public function actionView($id)
     {
-        $model = Parents::find()
-            ->with(['studentParents.student'])
-            ->where(['id' => $id])
-            ->one();
-
-        if ($model === null) {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
-
         if (Yii::$app->request->isAjax) {
             return $this->renderAjax('view', [
-                'model' => $model,
+                'model' => $this->findModel($id),
             ]);
         }
 
         return $this->render('view', [
-            'model' => $model,
+            'model' => $this->findModel($id),
         ]);
     }
 
-    public function actionCreate(): Response|array|string
+    public function actionCreate()
     {
-        $model = new Parents();
-        $model->status = Parents::STATUS_ACTIVE;
+        $model = new SmsTemplate();
         $request = Yii::$app->request;
 
         if ($request->isAjax && $request->post('ajax')) {
@@ -80,7 +65,7 @@ class ParentsController extends Controller
         if ($request->isAjax && $model->load($request->post())) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             if ($model->save()) {
-                return ['success' => true, 'message' => 'Parent saved successfully.'];
+                return ['success' => true, 'message' => 'SMS template saved successfully!'];
             }
             return ['success' => false, 'html' => $this->renderAjax('_form', ['model' => $model])];
         }
@@ -90,14 +75,14 @@ class ParentsController extends Controller
         }
 
         if ($model->load($request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Parent saved successfully.');
+            Yii::$app->session->setFlash('success', 'SMS template saved successfully!');
             return $this->redirect(['index']);
         }
 
         return $this->render('create', ['model' => $model]);
     }
 
-    public function actionUpdate(int $id): Response|array|string
+    public function actionUpdate($id)
     {
         $model = $this->findModel($id);
         $request = Yii::$app->request;
@@ -111,7 +96,7 @@ class ParentsController extends Controller
         if ($request->isAjax && $model->load($request->post())) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             if ($model->save()) {
-                return ['success' => true, 'message' => 'Parent updated successfully.'];
+                return ['success' => true, 'message' => 'SMS template updated successfully!'];
             }
             return ['success' => false, 'html' => $this->renderAjax('_form', ['model' => $model])];
         }
@@ -121,30 +106,25 @@ class ParentsController extends Controller
         }
 
         if ($model->load($request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Parent updated successfully.');
+            Yii::$app->session->setFlash('success', 'SMS template updated successfully!');
             return $this->redirect(['index']);
         }
 
         return $this->render('update', ['model' => $model]);
     }
 
-    public function actionDelete(int $id): Response|array
+    public function actionDelete($id)
     {
-        $model = $this->findModel($id);
-        $model->delete();
-
+        $this->findModel($id)->delete();
         if (Yii::$app->request->isAjax) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['success' => true, 'message' => 'Parent deleted successfully.'];
+            return $this->asJson(['success' => true, 'message' => 'SMS template deleted successfully']);
         }
-
-        Yii::$app->session->setFlash('success', 'Parent deleted successfully.');
         return $this->redirect(['index']);
     }
 
-    protected function findModel(int $id): Parents
+    protected function findModel($id)
     {
-        if (($model = Parents::findOne($id)) !== null) {
+        if (($model = SmsTemplate::findOne($id)) !== null) {
             return $model;
         }
 

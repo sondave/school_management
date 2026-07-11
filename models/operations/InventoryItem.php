@@ -98,6 +98,15 @@ class InventoryItem extends ActiveRecord
         return Inventory::getAccessoryTypeOptions()[$this->accesory_type] ?? $this->accesory_type;
     }
 
+    public function afterSave($insert, $changedAttributes): void
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        if ($insert) {
+            StockLevel::ensureForInventoryItem((int) $this->id);
+        }
+    }
+
     public function getCreatedByUser()
     {
         return $this->hasOne(User::class, ['id' => 'created_by']);

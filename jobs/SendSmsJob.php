@@ -19,13 +19,13 @@ class SendSmsJob extends BaseObject implements JobInterface
             return;
         }
 
-        // Skip if already sent
-        // if ($sms->processing_status === 'SENT') {
-        //     return;
-        // }
+        // Idempotency guard: do not resend already delivered messages.
+        if ((int) $sms->status === SmsNotification::STATUS_SENT) {
+            return;
+        }
 
         // Update status
-        $sms->status = '1'; // Mark as submitted for sending
+        $sms->status = SmsNotification::STATUS_SUBMITTED;
         $sms->short_code = Yii::$app->sms->shortCode;
         $sms->sent_at = date('Y-m-d H:i:s');
         $sms->save(false);
@@ -51,7 +51,7 @@ class SendSmsJob extends BaseObject implements JobInterface
     
         if ($result['success']) {
 
-            $sms->status = '2'; // Mark as sent
+            $sms->status = SmsNotification::STATUS_SENT;
             $sms->message_id = $result['messageid'] ?? $result['message_id'] ?? null;
             $sms->network_id = $result['networkid'] ?? $result['network_id'] ?? null;
             $sms->response_code = $result['response-code'] ?? $result['response_code'] ?? null;
@@ -60,7 +60,7 @@ class SendSmsJob extends BaseObject implements JobInterface
 
         } else {
 
-            $sms->status = '3'; // Mark as failed
+            $sms->status = SmsNotification::STATUS_FAILED;
             $sms->response_code = $result['response-code'] ?? $result['response_code'] ?? 'FAILED';
             $sms->response_description = $result['response-description'] ?? $result['response_description'] ?? 'SMS gateway request failed.';
             // $sms->retry_count++;

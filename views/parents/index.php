@@ -48,8 +48,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'layout' => "<div class='table-responsive custom-table-card'>\n{items}\n</div>\n<div class='d-flex justify-content-between align-items-center mt-3'>{summary}\n{pager}</div>",
                 'columns' => [
                     ['class' => 'yii\\grid\\SerialColumn'],
-                    'first_name',
-                    'other_names',
+                    [
+                        'label' => 'Full Name',
+                        'format' => 'raw',
+                        'value' => static function (Parents $model): string {
+                            return Html::a(Html::encode($model->getFullName()), '#', [
+                                'class' => 'parent-view-button',
+                                'data-url' => Url::to(['parents/view', 'id' => $model->id]),
+                            ]);
+                        },
+                    ],
                     [
                         'attribute' => 'gender',
                         'value' => static fn(Parents $model): string => $model->getGenderLabel(),

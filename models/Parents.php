@@ -72,6 +72,7 @@ class Parents extends ActiveRecord
             [['national_id'], 'string', 'max' => 20],
             [['phone_no', 'alternate_phone_no'], 'string', 'max' => 20],
             [['email'], 'email'],
+            [['email','phone_no'], 'unique'],
             [['email'], 'string', 'max' => 255],
             [['county'], 'string', 'max' => 100],
             [['physical_address'], 'string', 'max' => 255],
@@ -134,6 +135,21 @@ class Parents extends ActiveRecord
     public function getCountyLabel(): string
     {
         return SchoolInfo::getKenyaCountyOptions()[(string) $this->county] ?? (string) $this->county;
+    }
+
+    public function getFullName(): string
+    {
+        return trim((string) $this->first_name . ' ' . (string) $this->other_names);
+    }
+
+    public function getStudentParents()
+    {
+        return $this->hasMany(StudentParent::class, ['parent_id' => 'id']);
+    }
+
+    public function getStudents()
+    {
+        return $this->hasMany(Student::class, ['id' => 'student_id'])->via('studentParents');
     }
 
     public function getCreatedByUser()

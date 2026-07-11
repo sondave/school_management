@@ -33,6 +33,7 @@ class Inventory extends ActiveRecord
     public const ACCESSORY_CHALKS = 'chalks';
     public const ACCESSORY_MANILLA_PAPERS = 'manilla_papers';
     public const ACCESSORY_PENCILS = 'pencils';
+    public const ACCESSORY_PENS = 'pens';
     public const ACCESSORY_LAB_EQUIPMENTS = 'lab_equipments';
 
     public static function tableName(): string
@@ -122,6 +123,7 @@ class Inventory extends ActiveRecord
             self::ACCESSORY_CHALKS => 'Chalks',
             self::ACCESSORY_MANILLA_PAPERS => 'Manilla Papers',
             self::ACCESSORY_PENCILS => 'Pencils',
+            self::ACCESSORY_PENS => 'Pens',
             self::ACCESSORY_LAB_EQUIPMENTS => 'Laboratory Equipments',
         ];
     }
@@ -173,5 +175,57 @@ class Inventory extends ActiveRecord
     public function getUpdatedByUser()
     {
         return $this->hasOne(User::class, ['id' => 'updated_by']);
+    }
+
+    public function afterSave($insert, $changedAttributes): void
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        $newItemId = (int) $this->inventory_item_id;
+        $newQty = (int) ($this->quantity ?? 0);
+
+        if ($insert) {
+            $this->adjustTotalReceived($newItemId, $newQty);
+            return;
+        }
+
+        $oldItemId = isset($changedAttributes['inventory_item_id'])
+            ? (int) $changedAttributes['inventory_item_id']
+            : $newItemId;
+        $oldQty = isset($changedAttributes['quantity'])
+            ? (int) ($changedAttributes['quantity'] ?? 0)
+            : $newQty;
+
+        if ($oldItemId !== $newItemId) {
+            $this->adjustTotalReceived($oldItemId, -$oldQty);
+            $this->adjustTotalReceived($newItemId, $newQty);
+            return;
+        }
+
+        $diff = $newQty - $oldQty;
+        if ($diff !== 0) {
+            $this->adjustTotalReceived($newItemId, $diff);
+        }
+    }
+
+    public function afterDelete(): void
+    {
+        parent::afterDelete();
+
+        $itemId = (int) $this->inventory_item_id;
+        $qty = (int) ($this->quantity ?? 0);
+        $this->adjustTotalReceived($itemId, -$qty);
+    }
+
+    private function adjustTotalReceived(int $inventoryItemId, int $delta): void
+    {
+        if ($inventoryItemId <= 0 || $delta === 0) {
+            return;
+        }
+
+        $stockLevel = StockLevel::ensureForInventoryItem($inventoryItemId);
+        $newTotal = (int) $stockLevel->total_received + $delta;
+        $stockLevel->total_received = max(0, $newTotal);
+        $stockLevel->save(false);
     }
 }

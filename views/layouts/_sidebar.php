@@ -27,6 +27,9 @@
                         <li>
                             <a href="<?= \yii\helpers\Url::to(['parents/index']) ?>"><i data-feather="users"></i><span>Parents</span></a>
                         </li>
+                        <li>
+                            <a href="<?= \yii\helpers\Url::to(['students/index']) ?>"><i data-feather="user"></i><span>Students</span></a>
+                        </li>
                         <li class="submenu">
                             <a href="javascript:void(0);"><i data-feather="book-open"></i><span>Teachers</span><span class="menu-arrow"></span></a>
                             <ul>
@@ -40,8 +43,19 @@
                         <li class="submenu">
                             <a href="javascript:void(0);"><i data-feather="archive"></i><span>Operations</span><span class="menu-arrow"></span></a>
                             <ul>
+                            
+                                <!-- <li class="submenu submenu-two"><a href="javascript:void(0);" class=" subdrop"><span>Inventory Settings</span><span class="menu-arrow inside-submenu"></span></a>
+                                    <ul>
+                                        <li><a href="<?= \yii\helpers\Url::to(['operations/inventory-items/index']) ?>">Inventory Items</a></li>
+                                        <li><a href="<?= \yii\helpers\Url::to(['operations/inventory/index']) ?>">Inventory</a></li>
+                                        <li><a href="<?= \yii\helpers\Url::to(['operations/inventory-dispersal/index']) ?>">Inventory Dispersal</a></li>
+                                    </ul>
+                                </li> -->
                                 <li><a href="<?= \yii\helpers\Url::to(['operations/inventory-items/index']) ?>">Inventory Items</a></li>
                                 <li><a href="<?= \yii\helpers\Url::to(['operations/inventory/index']) ?>">Inventory</a></li>
+                                <li><a href="<?= \yii\helpers\Url::to(['operations/inventory-dispersal/index']) ?>">Inventory Dispersal</a></li>
+                                <li><a href="<?= \yii\helpers\Url::to(['operations/stock-levels/index']) ?>">Stock Levels</a></li>
+
                             </ul>
                         </li>
 
@@ -62,12 +76,7 @@
                                         <li><a href="<?= \yii\helpers\Url::to(['notifications/sms-notification/index']) ?>">SMS Notifications</a></li>
                                     </ul>
                                 </li>
-                                <li class="submenu submenu-two"><a href="javascript:void(0);">Email Notifications<span class="menu-arrow inside-submenu"></span></a>
-                                    <ul>
-                                        <!-- <li><a href="#">Send Email</a></li> -->
-                                        <li><a href="<?= \yii\helpers\Url::to(['notifications/email-notification/index']) ?>">Email Notifications</a></li>
-                                    </ul>
-                                </li>
+    
                             </ul>
                             
                         </li>
@@ -117,6 +126,8 @@
                                         <li><a href="<?= \yii\helpers\Url::to(['settings/grade-subjects/index']) ?>">Grade Subjects</a></li>
                                     </ul>
                                 </li>
+
+                                <li><a href="<?= \yii\helpers\Url::to(['settings/sms-template/index']) ?>">SMS Templates</a></li>
 
                             </ul>
                         </li>
