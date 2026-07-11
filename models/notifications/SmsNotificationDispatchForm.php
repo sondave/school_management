@@ -79,8 +79,10 @@ class SmsNotificationDispatchForm extends Model
 
         $options = [];
         foreach ($rows as $row) {
-            $options[(int) $row['id']] = (string) $row['name'];
+            $options[(int) $row['id']] = SmsTemplate::resolveNameLabel((string) $row['name']);
         }
+
+        asort($options, SORT_NATURAL | SORT_FLAG_CASE);
 
         return $options;
     }

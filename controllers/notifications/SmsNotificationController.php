@@ -19,9 +19,15 @@ use yii\web\Response;
 
 class SmsNotificationController extends Controller
 {
-    public function actionIndex(): string|Response
+    public function actionIndex(): string|Response|array
     {
         $model = new SmsNotificationDispatchForm();
+
+        if (Yii::$app->request->isAjax && Yii::$app->request->post('ajax') === 'sms-notification-form') {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $model->load(Yii::$app->request->post());
+            return \yii\bootstrap5\ActiveForm::validate($model);
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $recipients = $model->resolveRecipients();

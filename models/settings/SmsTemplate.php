@@ -75,6 +75,32 @@ class SmsTemplate extends ActiveRecord
         ];
     }
 
+    /**
+     * @return array<string,string>
+     */
+    public static function getNameLabelMap(): array
+    {
+        $map = [];
+        foreach (self::getGroupDropdownList() as $groupOptions) {
+            foreach ($groupOptions as $value => $label) {
+                $map[(string) $value] = (string) $label;
+            }
+        }
+
+        return $map;
+    }
+
+    public static function resolveNameLabel(string $value): string
+    {
+        $map = self::getNameLabelMap();
+        return $map[$value] ?? $value;
+    }
+
+    public function getNameLabel(): string
+    {
+        return self::resolveNameLabel((string) $this->name);
+    }
+
     public function getPrimaryKeyLabel()
     {
         if (strpos($this->name, 'PARENTS_') === 0) {

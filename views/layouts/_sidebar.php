@@ -70,12 +70,9 @@
                         <li class="submenu">
                             <a href="javascript:void(0);"><i data-feather="bell"></i><span>Notifications</span><span class="menu-arrow"></span></a>
                             <ul>
-                                <li class="submenu submenu-two"><a href="javascript:void(0);">SMS Notifications<span class="menu-arrow inside-submenu"></span></a>
-                                    <ul>
-                                        <!-- <li><a href="video-call.html">Send SMS</a></li> -->
-                                        <li><a href="<?= \yii\helpers\Url::to(['notifications/sms-notification/index']) ?>">SMS Notifications</a></li>
-                                    </ul>
-                                </li>
+
+
+                                <li><a href="<?= \yii\helpers\Url::to(['notifications/sms-notification/index']) ?>">SMS Notifications</a></li>
     
                             </ul>
                             
