@@ -83,7 +83,7 @@ use yii\widgets\ActiveForm;
     <div class="row">
         <div class="col-md-4">
             <div class="mb-3">
-                <?= $form->field($model, 'staff_number')->textInput(['maxlength' => 50, 'placeholder' => 'Optional staff number']) ?>
+                <?= $form->field($model, 'staff_number')->textInput(['maxlength' => 50, 'placeholder' => 'Input staff number']) ?>
             </div>
         </div>
         <div class="col-md-4">

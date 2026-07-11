@@ -66,7 +66,7 @@ class Teacher extends ActiveRecord
     public function rules(): array
     {
         return [
-            [['first_name', 'other_names', 'phone_number', 'email_address', 'date_of_birth', 'employment_type', 'status'], 'required'],
+            [['first_name', 'other_names', 'phone_number', 'email_address', 'date_of_birth', 'employment_type', 'status','staff_number'], 'required'],
             [['date_of_birth', 'created_at', 'updated_at'], 'safe'],
             [['created_by', 'updated_by', 'status'], 'integer'],
             [['first_name'], 'string', 'max' => 100],

@@ -1,6 +1,6 @@
 <?php
 
-use app\models\ClassTeacher;
+use app\models\operations\Inventory;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\helpers\Html;
@@ -10,11 +10,12 @@ use yii\widgets\Pjax;
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Class Teachers';
-$this->params['breadcrumbs'][] = 'Teachers';
+$this->title = 'Inventory';
+$this->params['breadcrumbs'][] = 'Operations';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="class-teachers-index">
+<div class="inventory-index">
+
     <div class="page-header">
         <div class="add-item d-flex">
             <div class="page-title">
@@ -26,23 +27,23 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
         <div class="page-btn">
-            <?= Html::button('<i data-feather="plus-circle" class="me-2"></i> Add Class Teacher', [
+            <?= Html::button('<i data-feather="plus-circle" class="me-2"></i> Add Inventory Item', [
                 'class' => 'btn btn-added',
-                'id' => 'create-class-teacher-button',
-                'data-url' => Url::to(['teachers/class-teachers/create']),
+                'id' => 'create-inventory-button',
+                'data-url' => Url::to(['operations/inventory/create']),
             ]) ?>
         </div>
     </div>
 
-    <?= Html::tag('div', '', ['id' => 'class-teacher-message']) ?>
+    <?= Html::tag('div', '', ['id' => 'inventory-message']) ?>
 
     <div class="card">
         <div class="card-body">
-            <?php Pjax::begin(['id' => 'class-teacher-grid-pjax', 'timeout' => 5000]); ?>
+            <?php Pjax::begin(['id' => 'inventory-grid-pjax', 'timeout' => 5000]); ?>
 
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
-                'emptyText' => 'No class teachers found.',
+                'emptyText' => 'No inventory records found.',
                 'tableOptions' => [
                     'class' => 'table datanew no-footer table-hover',
                 ],
@@ -50,35 +51,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 'columns' => [
                     ['class' => 'yii\\grid\\SerialColumn'],
                     [
-                        'attribute' => 'grade_id',
-                        'format' => 'raw',
-                        'value' => static function (ClassTeacher $model): string {
-                            return Html::a(
-                                Html::encode($model->getGradeLabel()),
-                                Url::to(['teachers/class-teachers/history', 'gradeId' => $model->grade_id]),
-                                ['class' => 'text-primary text-decoration-underline']
-                            );
-                        },
+                        'attribute' => 'accesory_type',
+                        'value' => static fn(Inventory $model): string => $model->getAccessoryTypeLabel(),
                     ],
                     [
-                        'attribute' => 'teacher_id',
-                        'value' => static fn(ClassTeacher $model): string => $model->getTeacherLabel(),
+                        'attribute' => 'inventory_item_id',
+                        'value' => static fn(Inventory $model): string => $model->getInventoryItemLabel(),
                     ],
                     [
-                        'attribute' => 'academic_year_id',
-                        'value' => static fn(ClassTeacher $model): string => $model->getAcademicYearLabel(),
+                        'attribute' => 'supplier_id',
+                        'value' => static fn(Inventory $model): string => $model->getSupplierLabel(),
                     ],
-                    'start_date:date',
-                    'end_date:date',
-                    [
-                        'attribute' => 'is_current',
-                        'format' => 'raw',
-                        'value' => static function (ClassTeacher $model): string {
-                            return (int) $model->is_current === ClassTeacher::CURRENT_YES
-                                ? '<span class="badge bg-success">Current</span>'
-                                : '<span class="badge bg-secondary">Not Current</span>';
-                        },
-                    ],
+                    'quantity',
+                    'received_on:date',
                     [
                         'class' => ActionColumn::class,
                         'template' => '{dropdown}',
@@ -86,19 +71,19 @@ $this->params['breadcrumbs'][] = $this->title;
                         'headerOptions' => ['class' => 'text-center'],
                         'contentOptions' => ['class' => 'text-center'],
                         'buttons' => [
-                            'dropdown' => static function ($url, ClassTeacher $model): string {
+                            'dropdown' => static function ($url, Inventory $model): string {
                                 $view = Html::a('<i data-feather="eye" class="info-img"></i> View', '#', [
-                                    'class' => 'dropdown-item class-teacher-view-button',
-                                    'data-url' => Url::to(['teachers/class-teachers/view', 'id' => $model->id]),
+                                    'class' => 'dropdown-item inventory-view-button',
+                                    'data-url' => Url::to(['operations/inventory/view', 'id' => $model->id]),
                                 ]);
                                 $update = Html::a('<i data-feather="edit" class="info-img"></i> Update', '#', [
-                                    'class' => 'dropdown-item class-teacher-update-button',
-                                    'data-url' => Url::to(['teachers/class-teachers/update', 'id' => $model->id]),
+                                    'class' => 'dropdown-item inventory-update-button',
+                                    'data-url' => Url::to(['operations/inventory/update', 'id' => $model->id]),
                                 ]);
                                 $delete = Html::a('<i data-feather="trash-2" class="info-img"></i> Delete', 'javascript:void(0);', [
-                                    'class' => 'dropdown-item class-teacher-delete-button',
-                                    'data-url' => Url::to(['teachers/class-teachers/delete', 'id' => $model->id]),
-                                    'data-name' => $model->getTeacherLabel(),
+                                    'class' => 'dropdown-item inventory-delete-button',
+                                    'data-url' => Url::to(['operations/inventory/delete', 'id' => $model->id]),
+                                    'data-name' => $model->getInventoryItemLabel(),
                                 ]);
 
                                 $items = '<li>' . $view . '</li>';
@@ -119,28 +104,29 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php Pjax::end(); ?>
         </div>
     </div>
+
 </div>
 
-<div class="modal fade" id="class-teacher-modal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="inventory-modal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="class-teacher-modal-label"></h5>
+                <h5 class="modal-title" id="inventory-modal-label"></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body py-4" id="class-teacher-modal-body"></div>
+            <div class="modal-body py-4" id="inventory-modal-body"></div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="classTeacherViewModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="inventoryViewModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="classTeacherViewModalLabel">Class Teacher Details</h5>
+                <h5 class="modal-title" id="inventoryViewModalLabel">Inventory Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" id="classTeacherViewModalBody">
+            <div class="modal-body" id="inventoryViewModalBody">
                 <div class="text-center py-3">
                     <i class="fa fa-spinner fa-spin fa-2x text-muted"></i>
                 </div>
@@ -150,35 +136,35 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <?php $this->registerJs(<<<'JS'
-function openClassTeacherModal(url, title) {
-    var modal = $('#class-teacher-modal');
+function openInventoryModal(url, title) {
+    var modal = $('#inventory-modal');
     modal.find('.modal-title').text(title);
-    modal.find('#class-teacher-modal-body').html('<div class="text-center py-4">Loading...</div>');
+    modal.find('#inventory-modal-body').html('<div class="text-center py-4">Loading...</div>');
     modal.modal('show');
 
     $.get(url).done(function (html) {
-        modal.find('#class-teacher-modal-body').html(html);
+        modal.find('#inventory-modal-body').html(html);
         if ($.fn.yiiActiveForm) {
             $.fn.yiiActiveForm.init();
         }
     }).fail(function () {
-        modal.find('#class-teacher-modal-body').html('<div class="alert alert-danger">Unable to load form.</div>');
+        modal.find('#inventory-modal-body').html('<div class="alert alert-danger">Unable to load form.</div>');
     });
 }
 
-function openClassTeacherViewModal(url) {
-    var modal = $('#classTeacherViewModal');
-    modal.find('#classTeacherViewModalBody').html('<div class="text-center py-4">Loading...</div>');
+function openInventoryViewModal(url) {
+    var modal = $('#inventoryViewModal');
+    modal.find('#inventoryViewModalBody').html('<div class="text-center py-4">Loading...</div>');
     modal.modal('show');
 
     $.get(url).done(function (html) {
-        modal.find('#classTeacherViewModalBody').html(html);
+        modal.find('#inventoryViewModalBody').html(html);
     }).fail(function () {
-        modal.find('#classTeacherViewModalBody').html('<div class="alert alert-danger">Unable to load details.</div>');
+        modal.find('#inventoryViewModalBody').html('<div class="alert alert-danger">Unable to load details.</div>');
     });
 }
 
-function showClassTeacherToast(message, type) {
+function showInventoryToast(message, type) {
     var icon = type === 'success' ? 'las la-check-circle' : 'las la-exclamation-circle';
     var toast = '<div class="toast align-items-center text-white bg-' + (type === 'success' ? 'success' : 'danger') + ' border-0" role="alert" aria-live="assertive" aria-atomic="true">'
         + '<div class="d-flex">'
@@ -189,32 +175,32 @@ function showClassTeacherToast(message, type) {
         + '</div>'
         + '</div>';
 
-    $('#class-teacher-message').html(toast);
-    var toastEl = document.querySelector('#class-teacher-message .toast');
+    $('#inventory-message').html(toast);
+    var toastEl = document.querySelector('#inventory-message .toast');
     if (toastEl) {
         var toastObj = new bootstrap.Toast(toastEl, {delay: 5000});
         toastObj.show();
     }
 }
 
-$(document).on('click', '#create-class-teacher-button', function (e) {
+$(document).on('click', '#create-inventory-button', function (e) {
     e.preventDefault();
-    openClassTeacherModal($(this).data('url'), 'Add Class Teacher');
+    openInventoryModal($(this).data('url'), 'Add Inventory Item');
 });
 
-$(document).on('click', '.class-teacher-update-button', function (e) {
+$(document).on('click', '.inventory-update-button', function (e) {
     e.preventDefault();
-    openClassTeacherModal($(this).data('url'), 'Update Class Teacher');
+    openInventoryModal($(this).data('url'), 'Update Inventory Item');
 });
 
-$(document).on('click', '.class-teacher-view-button', function (e) {
+$(document).on('click', '.inventory-view-button', function (e) {
     e.preventDefault();
-    openClassTeacherViewModal($(this).data('url'));
+    openInventoryViewModal($(this).data('url'));
 });
 
-$(document).on('click', '.class-teacher-delete-button', function (e) {
+$(document).on('click', '.inventory-delete-button', function (e) {
     e.preventDefault();
-    var name = $(this).data('name') || 'this class teacher';
+    var name = $(this).data('name') || 'this inventory item';
     if (!confirm('Are you sure you want to delete ' + name + '?')) {
         return;
     }
@@ -225,17 +211,17 @@ $(document).on('click', '.class-teacher-delete-button', function (e) {
         dataType: 'json'
     }).done(function (res) {
         if (res && res.success) {
-            $.pjax.reload({container: '#class-teacher-grid-pjax'});
-            showClassTeacherToast(res.message || 'Class teacher deleted successfully.', 'success');
+            $.pjax.reload({container: '#inventory-grid-pjax'});
+            showInventoryToast(res.message || 'Inventory item deleted successfully.', 'success');
             return;
         }
-        showClassTeacherToast((res && res.message) || 'Delete failed.', 'error');
+        showInventoryToast((res && res.message) || 'Delete failed.', 'error');
     }).fail(function () {
-        showClassTeacherToast('Unable to delete class teacher.', 'error');
+        showInventoryToast('Unable to delete inventory item.', 'error');
     });
 });
 
-$(document).on('beforeSubmit', '#class-teacher-form', function () {
+$(document).on('beforeSubmit', '#inventory-form', function () {
     var form = $(this);
 
     $.ajax({
@@ -245,17 +231,17 @@ $(document).on('beforeSubmit', '#class-teacher-form', function () {
         dataType: 'json',
         success: function (res) {
             if (res.success) {
-                $('#class-teacher-modal').modal('hide');
-                $.pjax.reload({container: '#class-teacher-grid-pjax'});
-                showClassTeacherToast(res.message || 'Class teacher saved successfully.', 'success');
+                $('#inventory-modal').modal('hide');
+                $.pjax.reload({container: '#inventory-grid-pjax'});
+                showInventoryToast(res.message || 'Inventory item saved successfully.', 'success');
             } else if (res.html) {
-                $('#class-teacher-modal-body').html(res.html);
+                $('#inventory-modal-body').html(res.html);
             } else {
-                showClassTeacherToast('An unexpected error occurred.', 'error');
+                showInventoryToast('An unexpected error occurred.', 'error');
             }
         },
         error: function () {
-            showClassTeacherToast('Unable to save class teacher.', 'error');
+            showInventoryToast('Unable to save inventory item.', 'error');
         }
     });
 

@@ -35,7 +35,7 @@ class ClassTeachersController extends Controller
 
         $dataProvider = new ActiveDataProvider([
             'query' => ClassTeacher::find()
-                ->with(['gradeStream.grade', 'gradeStream.stream', 'teacher', 'academicYear'])
+                ->with(['grade', 'teacher', 'academicYear'])
                 ->andFilterWhere(['id' => $selectedIds])
                 ->orderBy(['id' => SORT_DESC]),
             'pagination' => [
@@ -48,28 +48,28 @@ class ClassTeachersController extends Controller
         ]);
     }
 
-    public function actionHistory(int $gradeStreamId): string
+    public function actionHistory(int $gradeId): string
     {
         $dataProvider = new ActiveDataProvider([
             'query' => ClassTeacher::find()
-                ->with(['gradeStream.grade', 'gradeStream.stream', 'teacher', 'academicYear'])
-                ->where(['grade_stream_id' => $gradeStreamId])
+                ->with(['grade', 'teacher', 'academicYear'])
+                ->where(['grade_id' => $gradeId])
                 ->orderBy(['is_current' => SORT_DESC, 'id' => SORT_DESC]),
             'pagination' => [
                 'pageSize' => 20,
             ],
         ]);
 
-        $gradeStreamLabel = ClassTeacher::find()
-            ->with(['gradeStream.grade', 'gradeStream.stream'])
-            ->where(['grade_stream_id' => $gradeStreamId])
+        $gradeLabel = ClassTeacher::find()
+            ->with(['grade'])
+            ->where(['grade_id' => $gradeId])
             ->orderBy(['id' => SORT_DESC])
-            ->one()?->getGradeStreamLabel() ?? 'Unknown Grade Stream';
+            ->one()?->getGradeLabel() ?? 'Unknown Grade';
 
         return $this->render('history', [
             'dataProvider' => $dataProvider,
-            'gradeStreamId' => $gradeStreamId,
-            'gradeStreamLabel' => $gradeStreamLabel,
+            'gradeId' => $gradeId,
+            'gradeLabel' => $gradeLabel,
         ]);
     }
 
@@ -177,18 +177,18 @@ class ClassTeachersController extends Controller
         $currentIds = ClassTeacher::find()
             ->select('MAX(id)')
             ->where(['is_current' => ClassTeacher::CURRENT_YES])
-            ->groupBy('grade_stream_id')
+            ->groupBy('grade_id')
             ->column();
 
-        $gradeStreamsWithCurrent = ClassTeacher::find()
-            ->select('grade_stream_id')
+        $gradesWithCurrent = ClassTeacher::find()
+            ->select('grade_id')
             ->where(['is_current' => ClassTeacher::CURRENT_YES])
-            ->groupBy('grade_stream_id');
+            ->groupBy('grade_id');
 
         $latestFallbackIds = ClassTeacher::find()
             ->select('MAX(id)')
-            ->andFilterWhere(['not in', 'grade_stream_id', $gradeStreamsWithCurrent])
-            ->groupBy('grade_stream_id')
+            ->andFilterWhere(['not in', 'grade_id', $gradesWithCurrent])
+            ->groupBy('grade_id')
             ->column();
 
         return array_values(array_unique(array_merge($currentIds, $latestFallbackIds)));

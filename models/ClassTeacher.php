@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace app\models;
 
 use app\models\settings\AcademicYear;
-use app\models\settings\GradeStream;
+use app\models\settings\Grade;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -15,7 +15,7 @@ use yii\db\Expression;
  * This is the model class for table "class_teachers".
  *
  * @property int $id
- * @property int $grade_stream_id
+ * @property int $grade_id
  * @property int $teacher_id
  * @property int $academic_year_id
  * @property string $start_date
@@ -60,12 +60,12 @@ class ClassTeacher extends ActiveRecord
     public function rules(): array
     {
         return [
-            [['grade_stream_id', 'teacher_id', 'academic_year_id', 'start_date', 'is_current'], 'required'],
-            [['grade_stream_id', 'teacher_id', 'academic_year_id', 'is_current', 'created_by', 'updated_by'], 'integer'],
+            [['grade_id', 'teacher_id', 'academic_year_id', 'start_date', 'is_current'], 'required'],
+            [['grade_id', 'teacher_id', 'academic_year_id', 'is_current', 'created_by', 'updated_by'], 'integer'],
             [['start_date', 'end_date', 'created_at', 'updated_at'], 'safe'],
             [['is_current'], 'in', 'range' => array_keys(self::getIsCurrentOptions())],
             [['is_current'], 'default', 'value' => self::CURRENT_NO],
-            [['grade_stream_id'], 'exist', 'targetClass' => GradeStream::class, 'targetAttribute' => ['grade_stream_id' => 'id']],
+            [['grade_id'], 'exist', 'targetClass' => Grade::class, 'targetAttribute' => ['grade_id' => 'id']],
             [['teacher_id'], 'exist', 'targetClass' => Teacher::class, 'targetAttribute' => ['teacher_id' => 'id']],
             [['academic_year_id'], 'exist', 'targetClass' => AcademicYear::class, 'targetAttribute' => ['academic_year_id' => 'id']],
             [['start_date', 'end_date'], 'date', 'format' => 'php:Y-m-d'],
@@ -108,7 +108,7 @@ class ClassTeacher extends ActiveRecord
                 [
                     'and',
                     ['<>', 'id', $this->id],
-                    ['grade_stream_id' => $this->grade_stream_id],
+                    ['grade_id' => $this->grade_id],
                     ['is_current' => self::CURRENT_YES],
                 ]
             );
@@ -119,7 +119,7 @@ class ClassTeacher extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'grade_stream_id' => 'Grade Stream',
+            'grade_id' => 'Grade',
             'teacher_id' => 'Teacher',
             'academic_year_id' => 'Academic Year',
             'start_date' => 'Start Date',
@@ -140,22 +140,14 @@ class ClassTeacher extends ActiveRecord
         ];
     }
 
-    public static function getGradeStreamOptions(): array
+    public static function getGradeOptions(): array
     {
-        $items = GradeStream::find()
-            ->with(['grade', 'stream'])
-            ->where(['status' => GradeStream::STATUS_ACTIVE])
-            ->orderBy(['id' => SORT_DESC])
-            ->all();
-
-        $options = [];
-        foreach ($items as $item) {
-            $grade = $item->grade?->grade ?? 'Unknown Grade';
-            $stream = $item->stream?->stream ?? 'Unknown Stream';
-            $options[(int) $item->id] = $grade . ' - ' . $stream;
-        }
-
-        return $options;
+        return Grade::find()
+            ->select(['grade', 'id'])
+            ->where(['status' => Grade::STATUS_ACTIVE])
+            ->orderBy(['grade' => SORT_ASC])
+            ->indexBy('id')
+            ->column();
     }
 
     public static function getTeacherOptions(): array
@@ -205,11 +197,9 @@ class ClassTeacher extends ActiveRecord
         return self::getIsCurrentOptions()[(int) $this->is_current] ?? 'Unknown';
     }
 
-    public function getGradeStreamLabel(): string
+    public function getGradeLabel(): string
     {
-        $grade = $this->gradeStream?->grade?->grade ?? 'Unknown Grade';
-        $stream = $this->gradeStream?->stream?->stream ?? 'Unknown Stream';
-        return $grade . ' - ' . $stream;
+        return $this->grade?->grade ?? 'Unknown Grade';
     }
 
     public function getTeacherLabel(): string
@@ -222,9 +212,9 @@ class ClassTeacher extends ActiveRecord
         return $this->academicYear?->year ?? '-';
     }
 
-    public function getGradeStream()
+    public function getGrade()
     {
-        return $this->hasOne(GradeStream::class, ['id' => 'grade_stream_id']);
+        return $this->hasOne(Grade::class, ['id' => 'grade_id']);
     }
 
     public function getTeacher()

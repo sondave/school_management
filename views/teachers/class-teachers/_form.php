@@ -32,9 +32,9 @@ use yii\widgets\ActiveForm;
     <div class="row">
         <div class="col-md-4">
             <div class="mb-3">
-                <?= $form->field($model, 'grade_stream_id')->dropDownList(
-                    ClassTeacher::getGradeStreamOptions(),
-                    ['class' => 'form-select', 'prompt' => 'Select grade stream']
+                <?= $form->field($model, 'grade_id')->dropDownList(
+                    ClassTeacher::getGradeOptions(),
+                    ['class' => 'form-select', 'prompt' => 'Select grade']
                 ) ?>
             </div>
         </div>

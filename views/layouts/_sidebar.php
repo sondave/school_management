@@ -22,19 +22,8 @@
                             <a href="<?= \yii\helpers\Url::to(['/']) ?>" ><i data-feather="grid"></i><span>Dashboard</span> </a>
                         </li>
 
-                        <li>
-                            <a href="<?= \yii\helpers\Url::to(['lead/index']) ?>" ><i data-feather="user-plus"></i><span>Leads</span> </a>
-                        </li>
                         
-                        <li class="submenu">
-                            <a href="javascript:void(0);"><i data-feather="users"></i><span>Customers</span><span class="menu-arrow"></span></a>
-                            <ul>
-                                <li><a href="<?= \yii\helpers\Url::to(['customer/index', 'scope' => 'all']) ?>">All Customers</a></li>
-                                <li><a href="<?= \yii\helpers\Url::to(['customer/index', 'scope' => 'active']) ?>">Active Customers</a></li>
-                                <li><a href="<?= \yii\helpers\Url::to(['customer/index', 'scope' => 'pending']) ?>">Pending Payments</a></li>
-                                <li><a href="<?= \yii\helpers\Url::to(['customer/index', 'scope' => 'banned']) ?>">Banned Customers</a></li>
-                            </ul>
-                        </li>
+
                         <li>
                             <a href="<?= \yii\helpers\Url::to(['parents/index']) ?>"><i data-feather="users"></i><span>Parents</span></a>
                         </li>
@@ -43,18 +32,16 @@
                             <ul>
                                 <li><a href="<?= \yii\helpers\Url::to(['teachers/index']) ?>">Teachers</a></li>
                                 <li><a href="<?= \yii\helpers\Url::to(['teachers/class-teachers/index']) ?>">Class Teachers</a></li>
+                                <li><a href="<?= \yii\helpers\Url::to(['teachers/teacher-subjects/index']) ?>">Teacher Subjects</a></li>
                             </ul>
                         </li>
+
+
                         <li class="submenu">
-                            <a href="javascript:void(0);"><i data-feather="dollar-sign"></i><span>Loans</span><span class="menu-arrow"></span></a>
+                            <a href="javascript:void(0);"><i data-feather="archive"></i><span>Operations</span><span class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="<?= \yii\helpers\Url::to(['loan/create']) ?>">Disburse New</a></li>
-                                <li><a href="<?= \yii\helpers\Url::to(['loan/index', 'scope' => 'all']) ?>">All Loans</a></li>
-                                <li><a href="<?= \yii\helpers\Url::to(['loan/index', 'scope' => 'pending']) ?>">Pending Approval</a></li>
-                                <li><a href="<?= \yii\helpers\Url::to(['loan/index', 'scope' => 'disbursed']) ?>">Disbursed</a></li>
-                                <li><a href="<?= \yii\helpers\Url::to(['loan/index', 'scope' => 'partially-paid']) ?>">Partially Paid</a></li>
-                                <li><a href="<?= \yii\helpers\Url::to(['loan/index', 'scope' => 'fully-paid']) ?>">Fully Paid</a></li>
-                                <li><a href="<?= \yii\helpers\Url::to(['loan/index', 'scope' => 'written-off']) ?>">Written Off Loans</a></li>
+                                <li><a href="<?= \yii\helpers\Url::to(['operations/inventory-items/index']) ?>">Inventory Items</a></li>
+                                <li><a href="<?= \yii\helpers\Url::to(['operations/inventory/index']) ?>">Inventory</a></li>
                             </ul>
                         </li>
 
@@ -110,6 +97,7 @@
             
                                 <!-- <li><a href="<?= \yii\helpers\Url::to(['settings/general/index']) ?>">General</a></li> -->
                                 <li><a href="<?= \yii\helpers\Url::to(['settings/school-info/index']) ?>">School Info</a></li>
+                                <li><a href="<?= \yii\helpers\Url::to(['settings/suppliers/index']) ?>">Suppliers</a></li>
                                 <li><a href="<?= \yii\helpers\Url::to(['settings/subjects/index']) ?>">Subjects</a></li>
                                 <li><a href="<?= \yii\helpers\Url::to(['settings/lookup-values/index']) ?>">Lookup Values</a></li>
 
@@ -124,8 +112,8 @@
                                 <li class="submenu submenu-two"><a href="javascript:void(0);" class=" subdrop"><span>Grade Settings</span><span class="menu-arrow inside-submenu"></span></a>
                                     <ul>
                                         <li><a href="<?= \yii\helpers\Url::to(['settings/grades/index']) ?>">Grades</a></li>
-                                        <li><a href="<?= \yii\helpers\Url::to(['settings/streams/index']) ?>">Streams</a></li>
-                                        <li><a href="<?= \yii\helpers\Url::to(['settings/grade-streams/index']) ?>">Grade Streams</a></li>
+                                        <!-- <li><a href="<?= \yii\helpers\Url::to(['settings/streams/index']) ?>">Streams</a></li>
+                                        <li><a href="<?= \yii\helpers\Url::to(['settings/grade-streams/index']) ?>">Grade Streams</a></li> -->
                                         <li><a href="<?= \yii\helpers\Url::to(['settings/grade-subjects/index']) ?>">Grade Subjects</a></li>
                                     </ul>
                                 </li>
