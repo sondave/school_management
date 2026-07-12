@@ -11,7 +11,7 @@ $this->title = 'Set New Password';
 ?>
 <div class="login-content user-login">
     <div class="login-logo">
-        <img src="<?= Yii::$app->request->baseUrl ?>/theme/img/logo.png" alt="img">
+        <img src="<?= Yii::$app->request->baseUrl ?>/theme/img/logo.jpg" alt="img">
     </div>
 
     <?php $form = ActiveForm::begin(['id' => 'set-password-form']); ?>

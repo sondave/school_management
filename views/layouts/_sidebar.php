@@ -28,7 +28,7 @@
                             <a href="<?= \yii\helpers\Url::to(['parents/index']) ?>"><i data-feather="users"></i><span>Parents</span></a>
                         </li>
                         <li>
-                            <a href="<?= \yii\helpers\Url::to(['students/index']) ?>"><i data-feather="user"></i><span>Students</span></a>
+                            <a href="<?= \yii\helpers\Url::to(['students/index']) ?>"><i data-feather="users"></i><span>Students</span></a>
                         </li>
                         <li class="submenu">
                             <a href="javascript:void(0);"><i data-feather="book-open"></i><span>Teachers</span><span class="menu-arrow"></span></a>
@@ -41,7 +41,7 @@
 
 
                         <li class="submenu">
-                            <a href="javascript:void(0);"><i data-feather="archive"></i><span>Operations</span><span class="menu-arrow"></span></a>
+                            <a href="javascript:void(0);"><i data-feather="clipboard"></i><span>Operations</span><span class="menu-arrow"></span></a>
                             <ul>
                             
                                 <!-- <li class="submenu submenu-two"><a href="javascript:void(0);" class=" subdrop"><span>Inventory Settings</span><span class="menu-arrow inside-submenu"></span></a>
@@ -58,10 +58,10 @@
 
                             </ul>
                         </li>
-
+<!-- 
                         <li>
                             <a href="<?= \yii\helpers\Url::to(['transactions/index']) ?>"><i data-feather="repeat"></i><span>Transactions</span></a>
-                        </li>
+                        </li> -->
 
                         
                         
@@ -78,12 +78,17 @@
                             
                         </li>
 
+                        
+
+
                         <li class="submenu">
-                            <a href="javascript:void(0);"><i data-feather="user-check"></i><span>User Management</span><span class="menu-arrow"></span></a>
+                            <a href="javascript:void(0);"><i data-feather="repeat"></i><span>School Fees</span><span class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="<?= \yii\helpers\Url::to(['user/index']) ?>">Users</a></li>
+                                <li><a href="<?= \yii\helpers\Url::to(['settings/fees-categories/index']) ?>">Fees Categories</a></li>
+                                <li><a href="<?= \yii\helpers\Url::to(['settings/fees-structures/index']) ?>">Fees Structure</a></li>
                             </ul>
                         </li>
+
 
                         <li class="submenu">
                             <a href="javascript:void(0);"><i data-feather="file-text"></i><span>Reports</span><span class="menu-arrow"></span></a>
@@ -92,6 +97,14 @@
                                 <li><a href="<?= \yii\helpers\Url::to(['reports/portfolio']) ?>">Portfolio Summary</a></li>
                                 <li><a href="<?= \yii\helpers\Url::to(['reports/repayments']) ?>">Repayments Ledger</a></li>
                                 <li><a href="<?= \yii\helpers\Url::to(['reports/overdue']) ?>">Overdue Loans</a></li>
+                            </ul>
+                        </li>
+
+
+                        <li class="submenu">
+                            <a href="javascript:void(0);"><i data-feather="user-check"></i><span>User Management</span><span class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="<?= \yii\helpers\Url::to(['user/index']) ?>">Users</a></li>
                             </ul>
                         </li>
 
@@ -123,6 +136,8 @@
                                         <li><a href="<?= \yii\helpers\Url::to(['settings/grade-subjects/index']) ?>">Grade Subjects</a></li>
                                     </ul>
                                 </li>
+
+                                
 
                                 <li><a href="<?= \yii\helpers\Url::to(['settings/sms-template/index']) ?>">SMS Templates</a></li>
 

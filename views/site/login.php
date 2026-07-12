@@ -19,9 +19,9 @@ $labelOptions = ['class' => 'form-label fw-semibold small'];
 
 <div class="login-content user-login">
     <div class="login-logo">
-        <img src="<?= Yii::$app->request->baseUrl ?>/theme/img/logo.png" alt="img">
+        <img src="<?= Yii::$app->request->baseUrl ?>/theme/img/logo.jpg" alt="img">
         <a href="index.html" class="login-logo logo-white">
-            <img src="<?= Yii::$app->request->baseUrl ?>/theme/img/logo-white.png"  alt="">
+            <img src="<?= Yii::$app->request->baseUrl ?>/theme/img/logo-white.jpg"  alt="">
         </a>
     </div>
     <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>

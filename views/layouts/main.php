@@ -66,10 +66,10 @@ $markOneReadUrl = Url::to(['site/read-notification']);
 				<!-- Logo -->
 				<div class="header-left active">
 					<a href="index.html" class="logo logo-normal">
-						<img src="<?= Yii::$app->request->baseUrl ?>/theme/img/logo.png" alt="">
+						<img src="<?= Yii::$app->request->baseUrl ?>/theme/img/logo.jpg" alt="">
 					</a>
 					<a href="index.html" class="logo logo-white">
-						<img src="<?= Yii::$app->request->baseUrl ?>/theme/img/logo-white.png" alt="">
+						<img src="<?= Yii::$app->request->baseUrl ?>/theme/img/logo-white.jpg" alt="">
 					</a>
 					<a href="index.html" class="logo-small">
 						<img src="<?= Yii::$app->request->baseUrl ?>/theme/img/logo-small.png" alt="">
