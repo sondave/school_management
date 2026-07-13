@@ -90,7 +90,9 @@ class m260711_000017_create_students_module_tables extends Migration
             'id' => $this->primaryKey(),
             'student_id' => $this->integer()->notNull(),
             'academic_year_id' => $this->integer()->notNull(),
+            'term_id' => $this->integer()->notNull(),
             'grade_id' => $this->integer()->notNull(),
+            
             'is_current' => $this->boolean()->notNull()->defaultValue(true),
             'created_at' => $this->dateTime()->null(),
             'created_by' => $this->integer()->null(),
@@ -101,6 +103,7 @@ class m260711_000017_create_students_module_tables extends Migration
         $this->createIndex('idx-st_student_enrollments-student_id', '{{%st_student_enrollments}}', 'student_id');
         $this->createIndex('idx-st_student_enrollments-academic_year_id', '{{%st_student_enrollments}}', 'academic_year_id');
         $this->createIndex('idx-st_student_enrollments-grade_id', '{{%st_student_enrollments}}', 'grade_id');
+        $this->createIndex('idx-st_student_enrollments-term_id', '{{%st_student_enrollments}}', 'term_id');
         $this->createIndex('idx-st_student_enrollments-is_current', '{{%st_student_enrollments}}', 'is_current');
 
         $this->addForeignKey(
@@ -132,10 +135,21 @@ class m260711_000017_create_students_module_tables extends Migration
             'RESTRICT',
             'CASCADE'
         );
+
+        $this->addForeignKey(
+            'fk-st_student_enrollments-term_id',
+            '{{%st_student_enrollments}}',
+            'term_id',
+            '{{%st_terms}}',
+            'id',
+            'RESTRICT',
+            'CASCADE'
+        );
     }
 
     public function safeDown(): void
     {
+        $this->dropForeignKey('fk-st_student_enrollments-term_id', '{{%st_student_enrollments}}');
         $this->dropForeignKey('fk-st_student_enrollments-grade_id', '{{%st_student_enrollments}}');
         $this->dropForeignKey('fk-st_student_enrollments-academic_year_id', '{{%st_student_enrollments}}');
         $this->dropForeignKey('fk-st_student_enrollments-student_id', '{{%st_student_enrollments}}');

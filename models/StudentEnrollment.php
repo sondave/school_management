@@ -6,6 +6,8 @@ namespace app\models;
 
 use app\models\settings\AcademicYear;
 use app\models\settings\Grade;
+use app\models\settings\Term;
+use app\services\StudentFeeChargeService;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -17,6 +19,7 @@ use yii\db\Expression;
  * @property int $id
  * @property int $student_id
  * @property int $academic_year_id
+ * @property int $term_id
  * @property int $grade_id
  * @property int $is_current
  * @property string|null $created_at
@@ -55,13 +58,14 @@ class StudentEnrollment extends ActiveRecord
     public function rules(): array
     {
         return [
-            [['student_id', 'academic_year_id', 'grade_id'], 'required'],
-            [['student_id', 'academic_year_id', 'grade_id', 'is_current', 'created_by', 'updated_by'], 'integer'],
+            [['student_id', 'academic_year_id', 'term_id', 'grade_id'], 'required'],
+            [['student_id', 'academic_year_id', 'term_id', 'grade_id', 'is_current', 'created_by', 'updated_by'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['is_current'], 'default', 'value' => 1],
             [['is_current'], 'in', 'range' => [0, 1]],
             [['student_id'], 'exist', 'targetClass' => \app\models\Student::class, 'targetAttribute' => ['student_id' => 'id']],
             [['academic_year_id'], 'exist', 'targetClass' => AcademicYear::class, 'targetAttribute' => ['academic_year_id' => 'id']],
+            [['term_id'], 'exist', 'targetClass' => Term::class, 'targetAttribute' => ['term_id' => 'id']],
             [['grade_id'], 'exist', 'targetClass' => Grade::class, 'targetAttribute' => ['grade_id' => 'id']],
             ['is_current', 'validateOnlyOneCurrent'],
         ];
@@ -87,6 +91,10 @@ class StudentEnrollment extends ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
 
+        if ($insert) {
+            StudentFeeChargeService::createChargesForEnrollment($this);
+        }
+
         if ((int) $this->is_current === 1) {
             self::updateAll(
                 ['is_current' => 0],
@@ -101,6 +109,7 @@ class StudentEnrollment extends ActiveRecord
             'id' => 'ID',
             'student_id' => 'Student',
             'academic_year_id' => 'Academic Year',
+            'term_id' => 'Term',
             'grade_id' => 'Grade',
             'is_current' => 'Is Current',
             'created_at' => 'Created At',
@@ -128,6 +137,15 @@ class StudentEnrollment extends ActiveRecord
             ->column();
     }
 
+    public static function getTermOptions(): array
+    {
+        return Term::find()
+            ->select(['name', 'id'])
+            ->orderBy(['id' => SORT_ASC])
+            ->indexBy('id')
+            ->column();
+    }
+
     public function getAcademicYearLabel(): string
     {
         return $this->academicYear?->year ?? '-';
@@ -136,6 +154,11 @@ class StudentEnrollment extends ActiveRecord
     public function getGradeLabel(): string
     {
         return $this->grade?->grade ?? '-';
+    }
+
+    public function getTermLabel(): string
+    {
+        return $this->term?->name ?? '-';
     }
 
     public function getStudent()
@@ -151,6 +174,11 @@ class StudentEnrollment extends ActiveRecord
     public function getGrade()
     {
         return $this->hasOne(Grade::class, ['id' => 'grade_id']);
+    }
+
+    public function getTerm()
+    {
+        return $this->hasOne(Term::class, ['id' => 'term_id']);
     }
 
     public function getCreatedByUser()

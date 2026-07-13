@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace app\models\settings;
 
+use app\services\StudentFeeChargeService;
 use app\models\User;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -127,6 +128,15 @@ class FeesStructure extends ActiveRecord
     public function getStatusLabel(): string
     {
         return self::getStatusOptions()[(int) $this->status] ?? 'Unknown';
+    }
+
+    public function afterSave($insert, $changedAttributes): void
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        if ($insert) {
+            StudentFeeChargeService::createChargesForFeeStructure($this);
+        }
     }
 
     public function getAcademicYear()

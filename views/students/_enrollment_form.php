@@ -25,13 +25,16 @@ use yii\widgets\ActiveForm;
     </div>
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <?= $form->field($model, 'academic_year_id')->dropDownList(StudentEnrollment::getAcademicYearOptions(), ['prompt' => 'Select academic year']) ?>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
+            <?= $form->field($model, 'term_id')->dropDownList(StudentEnrollment::getTermOptions(), ['prompt' => 'Select term']) ?>
+        </div>
+        <div class="col-md-3">
             <?= $form->field($model, 'grade_id')->dropDownList(StudentEnrollment::getGradeOptions(), ['prompt' => 'Select grade']) ?>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <?= $form->field($model, 'is_current')->dropDownList([1 => 'Yes', 0 => 'No']) ?>
         </div>
     </div>

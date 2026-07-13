@@ -62,6 +62,8 @@ class AppAsset extends AssetBundle
         // toast aleart
         'theme/plugins/toastr/toastr.min.js',
         'theme/plugins/toastr/toastr.js',
+        // sweet alert
+        'theme/plugins/sweetalert/sweetalert2.all.min.js',
         // Custom JS
         'theme/js/theme-script.js',
         'theme/js/script.js',

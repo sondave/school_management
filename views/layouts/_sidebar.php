@@ -86,6 +86,15 @@
                             <ul>
                                 <li><a href="<?= \yii\helpers\Url::to(['settings/fees-categories/index']) ?>">Fees Categories</a></li>
                                 <li><a href="<?= \yii\helpers\Url::to(['settings/fees-structures/index']) ?>">Fees Structure</a></li>
+                                <li><a href="<?= \yii\helpers\Url::to(['settings/fee-payments/index']) ?>">Fee Payments</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="submenu">
+                            <a href="javascript:void(0);"><i data-feather="activity"></i><span>Exams</span><span class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="<?= \yii\helpers\Url::to(['exams/index']) ?>">Exams</a></li>
+                                <li><a href="<?= \yii\helpers\Url::to(['exams/submit-marks']) ?>">Submit Marks</a></li>
                             </ul>
                         </li>
 
@@ -94,9 +103,9 @@
                             <a href="javascript:void(0);"><i data-feather="file-text"></i><span>Reports</span><span class="menu-arrow"></span></a>
                             <ul>
                                 <li><a href="<?= \yii\helpers\Url::to(['reports/index']) ?>">Reports Home</a></li>
-                                <li><a href="<?= \yii\helpers\Url::to(['reports/portfolio']) ?>">Portfolio Summary</a></li>
-                                <li><a href="<?= \yii\helpers\Url::to(['reports/repayments']) ?>">Repayments Ledger</a></li>
-                                <li><a href="<?= \yii\helpers\Url::to(['reports/overdue']) ?>">Overdue Loans</a></li>
+                                <li><a href="<?= \yii\helpers\Url::to(['reports/students']) ?>">Students By Grade</a></li>
+                                <li><a href="<?= \yii\helpers\Url::to(['reports/fees']) ?>">Fees Collection</a></li>
+                                <li><a href="<?= \yii\helpers\Url::to(['reports/exams']) ?>">Exam Coverage</a></li>
                             </ul>
                         </li>
 
@@ -114,6 +123,7 @@
                             <a href="javascript:void(0);"><i data-feather="settings"></i><span>Settings</span><span class="menu-arrow"></span></a>
                             <ul>
             
+                                <li><a href="<?= \yii\helpers\Url::to(['settings/exam-types/index']) ?>">Exam Types</a></li>
                                 <!-- <li><a href="<?= \yii\helpers\Url::to(['settings/general/index']) ?>">General</a></li> -->
                                 <li><a href="<?= \yii\helpers\Url::to(['settings/school-info/index']) ?>">School Info</a></li>
                                 <li><a href="<?= \yii\helpers\Url::to(['settings/suppliers/index']) ?>">Suppliers</a></li>

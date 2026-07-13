@@ -15,6 +15,7 @@ use yii\helpers\Html;
             <thead>
             <tr>
                 <th>Academic Year</th>
+                <th>Term</th>
                 <th>Grade</th>
                 <th>Current</th>
                 <th class="text-end">Actions</th>
@@ -23,12 +24,13 @@ use yii\helpers\Html;
             <tbody>
             <?php if (empty($model->enrollments)): ?>
                 <tr>
-                    <td colspan="4" class="text-center text-muted">No enrollment records found.</td>
+                    <td colspan="5" class="text-center text-muted">No enrollment records found.</td>
                 </tr>
             <?php else: ?>
                 <?php foreach ($model->enrollments as $enrollment): ?>
                     <tr>
                         <td><?= Html::encode($enrollment->getAcademicYearLabel()) ?></td>
+                        <td><?= Html::encode($enrollment->getTermLabel()) ?></td>
                         <td><?= Html::encode($enrollment->getGradeLabel()) ?></td>
                         <td>
                             <?php if ((int) $enrollment->is_current === 1): ?>

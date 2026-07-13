@@ -223,23 +223,35 @@ $(document).on('click', '.fees-structure-view-button', function (e) {
 $(document).on('click', '.fees-structure-delete-button', function (e) {
     e.preventDefault();
     var name = $(this).data('name') || 'this fee structure';
-    if (!confirm('Are you sure you want to delete ' + name + '?')) {
-        return;
-    }
+    var url = $(this).data('url');
 
-    $.ajax({
-        url: $(this).data('url'),
-        type: 'POST',
-        dataType: 'json'
-    }).done(function (res) {
-        if (res && res.success) {
-            $.pjax.reload({container: '#fees-structure-grid-pjax'});
-            showFeesStructureToast(res.message || 'Fee structure deleted successfully.', 'success');
+    Swal.fire({
+        title: 'Delete fee structure?',
+        html: 'You are about to delete <strong>' + name + '</strong>.<br>This will also delete all linked fee allocations for students.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete',
+        cancelButtonText: 'Cancel',
+        reverseButtons: true
+    }).then(function (result) {
+        if (!result.isConfirmed) {
             return;
         }
-        showFeesStructureToast((res && res.message) || 'Delete failed.', 'error');
-    }).fail(function () {
-        showFeesStructureToast('Unable to delete fee structure.', 'error');
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'json'
+        }).done(function (res) {
+            if (res && res.success) {
+                $.pjax.reload({container: '#fees-structure-grid-pjax'});
+                showFeesStructureToast(res.message || 'Fee structure deleted successfully.', 'success');
+                return;
+            }
+            showFeesStructureToast((res && res.message) || 'Delete failed.', 'error');
+        }).fail(function () {
+            showFeesStructureToast('Unable to delete fee structure.', 'error');
+        });
     });
 });
 

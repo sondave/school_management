@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace app\controllers\settings;
 
-use app\models\settings\FeesStructure;
+use app\models\settings\ExamType;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
@@ -12,7 +12,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
-class FeesStructuresController extends Controller
+class ExamTypesController extends Controller
 {
     public function behaviors(): array
     {
@@ -32,7 +32,7 @@ class FeesStructuresController extends Controller
     public function actionIndex(): string
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => FeesStructure::find()->with(['academicYear', 'term', 'grade', 'category'])->orderBy(['id' => SORT_DESC]),
+            'query' => ExamType::find()->orderBy(['id' => SORT_DESC]),
             'pagination' => [
                 'pageSize' => 20,
             ],
@@ -58,7 +58,7 @@ class FeesStructuresController extends Controller
 
     public function actionCreate(): Response|array|string
     {
-        $model = new FeesStructure();
+        $model = new ExamType();
         $request = Yii::$app->request;
 
         if ($request->isAjax && $request->post('ajax')) {
@@ -70,7 +70,7 @@ class FeesStructuresController extends Controller
         if ($request->isAjax && $model->load($request->post())) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             if ($model->save()) {
-                return ['success' => true, 'message' => 'Fee structure saved successfully.'];
+                return ['success' => true, 'message' => 'Exam type saved successfully.'];
             }
             return ['success' => false, 'html' => $this->renderAjax('_form', ['model' => $model])];
         }
@@ -80,7 +80,7 @@ class FeesStructuresController extends Controller
         }
 
         if ($model->load($request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Fee structure saved successfully.');
+            Yii::$app->session->setFlash('success', 'Exam type saved successfully.');
             return $this->redirect(['index']);
         }
 
@@ -101,7 +101,7 @@ class FeesStructuresController extends Controller
         if ($request->isAjax && $model->load($request->post())) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             if ($model->save()) {
-                return ['success' => true, 'message' => 'Fee structure updated successfully.'];
+                return ['success' => true, 'message' => 'Exam type updated successfully.'];
             }
             return ['success' => false, 'html' => $this->renderAjax('_form', ['model' => $model])];
         }
@@ -111,7 +111,7 @@ class FeesStructuresController extends Controller
         }
 
         if ($model->load($request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Fee structure updated successfully.');
+            Yii::$app->session->setFlash('success', 'Exam type updated successfully.');
             return $this->redirect(['index']);
         }
 
@@ -121,40 +121,20 @@ class FeesStructuresController extends Controller
     public function actionDelete(int $id): Response|array
     {
         $model = $this->findModel($id);
-
-        $transaction = Yii::$app->db->beginTransaction();
-        try {
-            Yii::$app->db->createCommand()
-                ->delete('{{%st_student_fee_charges}}', ['fee_structure_id' => $id])
-                ->execute();
-
-            $model->delete();
-            $transaction->commit();
-        } catch (\Throwable $exception) {
-            $transaction->rollBack();
-            Yii::error($exception->getMessage(), __METHOD__);
-
-            if (Yii::$app->request->isAjax) {
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return ['success' => false, 'message' => 'Unable to delete fee structure and linked fee allocations.'];
-            }
-
-            Yii::$app->session->setFlash('error', 'Unable to delete fee structure and linked fee allocations.');
-            return $this->redirect(['index']);
-        }
+        $model->delete();
 
         if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['success' => true, 'message' => 'Fee structure and linked fee allocations deleted successfully.'];
+            return ['success' => true, 'message' => 'Exam type deleted successfully.'];
         }
 
-        Yii::$app->session->setFlash('success', 'Fee structure and linked fee allocations deleted successfully.');
+        Yii::$app->session->setFlash('success', 'Exam type deleted successfully.');
         return $this->redirect(['index']);
     }
 
-    protected function findModel(int $id): FeesStructure
+    protected function findModel(int $id): ExamType
     {
-        if (($model = FeesStructure::findOne($id)) !== null) {
+        if (($model = ExamType::findOne($id)) !== null) {
             return $model;
         }
 

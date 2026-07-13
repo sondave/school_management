@@ -9,9 +9,14 @@ use app\models\ContactForm;
 use app\models\Customer;
 use app\models\Loan;
 use app\models\LoginForm;
+use app\models\Student;
+use app\models\Parents;
 use app\models\Payment;
 use app\models\SetPasswordForm;
 use app\models\User;
+use app\models\fees\FeePayment;
+use app\models\fees\StudentFeeCharge;
+use app\models\settings\Exam;
 use app\models\settings\General;
 use app\services\SystemNotificationService;
 use yii\captcha\CaptchaAction;
@@ -102,8 +107,39 @@ class SiteController extends Controller
      */
     public function actionIndex(): string
     {
-        Yii::$app->session->setFlash('success', 'Welcome to Suswa Loan Management System!');
-        return $this->render('index');
+        $totalStudents = (int) Student::find()->count();
+        $totalParents = (int) Parents::find()->count();
+        $activeExams = (int) Exam::find()->where(['status' => Exam::STATUS_ACTIVE])->count();
+
+        $today = date('Y-m-d');
+        $monthStart = date('Y-m-01');
+        $monthEnd = date('Y-m-t');
+
+        $monthCollections = (float) (FeePayment::find()
+            ->where(['between', 'payment_date', $monthStart, $monthEnd])
+            ->sum('amount') ?? 0);
+
+        $outstandingFees = (float) (StudentFeeCharge::find()->sum('balance') ?? 0);
+
+        $dailyCollections = (float) (FeePayment::find()
+            ->where(['payment_date' => $today])
+            ->sum('amount') ?? 0);
+
+        $totalCollected = (float) (FeePayment::find()->sum('amount') ?? 0);
+        $totalBilled = (float) (StudentFeeCharge::find()->sum('amount') ?? 0);
+        $collectionRate = $totalBilled > 0 ? ($totalCollected / $totalBilled) * 100 : 0.0;
+
+        return $this->render('index', [
+            'analytics' => [
+                'totalStudents' => $totalStudents,
+                'totalParents' => $totalParents,
+                'activeExams' => $activeExams,
+                'dailyCollections' => $dailyCollections,
+                'monthCollections' => $monthCollections,
+                'outstandingFees' => $outstandingFees,
+                'collectionRate' => $collectionRate,
+            ],
+        ]);
     }
 
     /**
