@@ -15,7 +15,7 @@ use yii\db\Expression;
  *
  * @property int $id
  * @property string|null $upi
- * @property string|null $nemis_no
+ * @property string|null $access_number
  * @property string $first_name
  * @property string $middle_name
  * @property string $surname
@@ -23,6 +23,10 @@ use yii\db\Expression;
  * @property string $date_of_birth
  * @property string|null $birth_cert_no
  * @property string|null $admission_date
+ * @property string $admission_type
+ * @property string|null $transfered_from
+ * @property string|null $transfered_to
+ * @property bool $has_special_needs
  * @property int|null $status
  * @property string|null $created_at
  * @property int|null $created_by
@@ -31,9 +35,21 @@ use yii\db\Expression;
  */
 class Student extends ActiveRecord
 {
+    public const ADMISSION_TYPE_NEW = 'new_admission';
+    public const ADMISSION_TYPE_TRANSFER = 'transfer';
+
     public static function tableName(): string
     {
         return 'st_students';
+    }
+
+    public function init(): void
+    {
+        parent::init();
+
+        if ($this->isNewRecord && $this->admission_type === null) {
+            $this->admission_type = self::ADMISSION_TYPE_NEW;
+        }
     }
 
     public function behaviors(): array
@@ -60,18 +76,26 @@ class Student extends ActiveRecord
     public function rules(): array
     {
         return [
-            [['first_name', 'middle_name', 'surname', 'date_of_birth'], 'required'],
+            [['first_name', 'middle_name', 'surname', 'date_of_birth', 'admission_type'], 'required'],
             [['gender_id', 'status', 'created_by', 'updated_by'], 'integer'],
+            [['has_special_needs'], 'boolean'],
             [['date_of_birth', 'admission_date', 'created_at', 'updated_at'], 'safe'],
-            [['upi', 'nemis_no', 'birth_cert_no'], 'string', 'max' => 30],
+            [['upi', 'access_number', 'birth_cert_no'], 'string', 'max' => 30],
+            [['transfered_from', 'transfered_to'], 'string', 'max' => 255],
+            [['admission_type'], 'string', 'max' => 30],
             [['first_name', 'middle_name', 'surname'], 'string', 'max' => 100],
-            [['upi', 'nemis_no', 'birth_cert_no', 'first_name', 'middle_name', 'surname'], 'trim'],
-            [['upi', 'nemis_no', 'birth_cert_no', 'gender_id', 'status', 'admission_date'], 'default', 'value' => null],
+            [['upi', 'access_number', 'birth_cert_no', 'first_name', 'middle_name', 'surname', 'transfered_from', 'transfered_to'], 'trim'],
+            [['upi', 'access_number', 'birth_cert_no', 'gender_id', 'status', 'admission_date', 'transfered_from', 'transfered_to'], 'default', 'value' => null],
+            [['admission_type'], 'default', 'value' => self::ADMISSION_TYPE_NEW],
+            [['has_special_needs'], 'default', 'value' => false],
+            [['admission_type'], 'in', 'range' => array_keys(self::getAdmissionTypeOptions())],
             [['date_of_birth', 'admission_date'], 'date', 'format' => 'php:Y-m-d'],
             [['upi'], 'unique', 'skipOnEmpty' => true],
-            [['nemis_no'], 'unique', 'skipOnEmpty' => true],
+            [['access_number'], 'unique', 'skipOnEmpty' => true],
             [['gender_id'], 'exist', 'targetClass' => LookupValue::class, 'targetAttribute' => ['gender_id' => 'id'], 'skipOnEmpty' => true],
             [['status'], 'exist', 'targetClass' => LookupValue::class, 'targetAttribute' => ['status' => 'id'], 'skipOnEmpty' => true],
+            [['transfered_from'], 'required', 'when' => fn (self $model): bool => $model->isNewRecord && $model->admission_type === self::ADMISSION_TYPE_TRANSFER, 'whenClient' => "function () { return /transfer/i.test($('input[name=\"Student[admission_type]\"]:checked').val() || ''); }"],
+            [['transfered_to'], 'required', 'when' => fn (self $model): bool => !$model->isNewRecord && $model->isTransferedStatus(), 'whenClient' => "function () { return $('.field-student-status').is(':visible') && /transfered|transferred/i.test($('#student-status option:selected').text()); }"],
             [['gender_id'], 'validateGenderLookup'],
             [['status'], 'validateStatusLookup'],
         ];
@@ -127,7 +151,7 @@ class Student extends ActiveRecord
         return [
             'id' => 'ID',
             'upi' => 'UPI',
-            'nemis_no' => 'NEMIS No',
+            'access_number' => 'Access Number',
             'first_name' => 'First Name',
             'middle_name' => 'Middle Name',
             'surname' => 'Surname',
@@ -135,12 +159,34 @@ class Student extends ActiveRecord
             'date_of_birth' => 'Date of Birth',
             'birth_cert_no' => 'Birth Cert No',
             'admission_date' => 'Admission Date',
+            'admission_type' => 'Admission Type',
+            'transfered_from' => 'Transfered From',
+            'transfered_to' => 'Transfered To',
+            'has_special_needs' => 'Has Special Needs',
             'status' => 'Status',
             'created_at' => 'Created At',
             'created_by' => 'Created By',
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
         ];
+    }
+
+    public function getHasSpecialNeedsLabel(): string
+    {
+        return (bool) $this->has_special_needs ? 'Yes' : 'No';
+    }
+
+    public static function getAdmissionTypeOptions(): array
+    {
+        return [
+            self::ADMISSION_TYPE_NEW => 'New Admission',
+            self::ADMISSION_TYPE_TRANSFER => 'Transfer',
+        ];
+    }
+
+    public function getAdmissionTypeLabel(): string
+    {
+        return self::getAdmissionTypeOptions()[$this->admission_type] ?? '-';
     }
 
     public static function getGenderOptions(): array
@@ -197,6 +243,29 @@ class Student extends ActiveRecord
     public function getStatusLabel(): string
     {
         return $this->statusLookup?->name ?? '-';
+    }
+
+    private function isTransferedStatus(): bool
+    {
+        if (empty($this->status)) {
+            return false;
+        }
+
+        $statusName = LookupValue::find()
+            ->select(['name'])
+            ->where([
+                'id' => (int) $this->status,
+                'category' => 'student_status',
+            ])
+            ->scalar();
+
+        if (!is_string($statusName)) {
+            return false;
+        }
+
+        $normalized = strtolower(trim($statusName));
+
+        return in_array($normalized, ['transfered', 'transferred', 'transfer'], true);
     }
 
     public function getGenderLookup()

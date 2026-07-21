@@ -72,11 +72,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     'date_of_birth:date',
                     'admission_date:date',
                     [
+                        'attribute' => 'has_special_needs',
+                        'value' => static fn(Student $model): string => $model->getHasSpecialNeedsLabel(),
+                    ],
+                    [
                         'attribute' => 'status',
                         'value' => static fn(Student $model): string => $model->getStatusLabel(),
                     ],
                     'upi',
-                    'nemis_no',
+                    'access_number',
                     [
                         'class' => ActionColumn::class,
                         'template' => '{dropdown}',

@@ -22,7 +22,7 @@ use yii\db\Expression;
  * @property string $date_of_birth
  * @property string $employment_type
  * @property string|null $tsc_number
- * @property string|null $staff_number
+ * @property string|null $first_appointment_date
  * @property int $status
  * @property string|null $created_at
  * @property int|null $created_by
@@ -66,16 +66,16 @@ class Teacher extends ActiveRecord
     public function rules(): array
     {
         return [
-            [['first_name', 'other_names', 'phone_number', 'email_address', 'date_of_birth', 'employment_type', 'status','staff_number'], 'required'],
-            [['date_of_birth', 'created_at', 'updated_at'], 'safe'],
+            [['first_name', 'other_names', 'phone_number', 'email_address', 'date_of_birth', 'employment_type', 'status'], 'required'],
+            [['date_of_birth', 'created_at', 'updated_at','first_appointment_date'], 'safe'],
             [['created_by', 'updated_by', 'status'], 'integer'],
             [['first_name'], 'string', 'max' => 100],
             [['other_names'], 'string', 'max' => 150],
             [['phone_number', 'alternate_phone_number'], 'string', 'max' => 20],
             [['email_address'], 'string', 'max' => 255],
-            [['tsc_number', 'staff_number'], 'string', 'max' => 50],
-            [['phone_number', 'alternate_phone_number', 'email_address', 'tsc_number', 'staff_number'], 'trim'],
-            [['alternate_phone_number', 'staff_number', 'tsc_number'], 'default', 'value' => null],
+            [['tsc_number'], 'string', 'max' => 50],
+            [['phone_number', 'alternate_phone_number', 'email_address', 'tsc_number'], 'trim'],
+            [['alternate_phone_number', 'first_appointment_date', 'tsc_number'], 'default', 'value' => null],
             [['email_address'], 'email'],
             [['employment_type'], 'in', 'range' => array_keys(self::getEmploymentTypeOptions())],
             [['status'], 'in', 'range' => array_keys(self::getStatusOptions())],
@@ -85,7 +85,22 @@ class Teacher extends ActiveRecord
             [['alternate_phone_number'], 'unique'],
             [['email_address'], 'unique'],
             [['tsc_number'], 'unique'],
-            [['staff_number'], 'unique'],
+            [
+                'first_appointment_date',
+                'compare',
+                'compareValue' => date('Y-m-d'),
+                'operator' => '<=',
+                'type' => 'date',
+                'message' => 'This date cannot be in the future.',
+            ],
+            [
+                'date_of_birth',
+                'compare',
+                'compareValue' => date('Y-m-d'),
+                'operator' => '<=',
+                'type' => 'date',
+                'message' => 'This date cannot be in the future.',
+            ],
         ];
     }
 
@@ -101,7 +116,7 @@ class Teacher extends ActiveRecord
             'date_of_birth' => 'Date of Birth',
             'employment_type' => 'Employment Type',
             'tsc_number' => 'TSC Number',
-            'staff_number' => 'Staff Number',
+            'first_appointment_date' => 'First Appointment Date',
             'status' => 'Status',
             'created_at' => 'Created At',
             'created_by' => 'Created By',

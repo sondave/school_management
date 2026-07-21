@@ -11,8 +11,9 @@ use yii\widgets\DetailView;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'upi',
-            'nemis_no',
+            'admission_type',
+            'transfered_from',
+            
             [
                 'label' => 'Full Name',
                 'value' => $model->getFullName(),
@@ -25,9 +26,16 @@ use yii\widgets\DetailView;
             'birth_cert_no',
             'admission_date:date',
             [
+                'attribute' => 'has_special_needs',
+                'value' => $model->getHasSpecialNeedsLabel(),
+            ],
+            'upi',
+            'access_number',
+            [
                 'attribute' => 'status',
                 'value' => $model->getStatusLabel(),
             ],
+            'transfered_to',
             [
                 'attribute' => 'created_by',
                 'value' => static fn(Student $m): string => $m->createdByUser?->username ?? '-',

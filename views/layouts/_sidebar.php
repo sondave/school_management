@@ -98,6 +98,13 @@
                             </ul>
                         </li>
 
+                        <li class="submenu">
+                            <a href="javascript:void(0);"><i data-feather="user-check"></i><span>User Management</span><span class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="<?= \yii\helpers\Url::to(['user/index']) ?>">Users</a></li>
+                            </ul>
+                        </li>
+
 
                         <li class="submenu">
                             <a href="javascript:void(0);"><i data-feather="file-text"></i><span>Reports</span><span class="menu-arrow"></span></a>
@@ -108,16 +115,6 @@
                                 <li><a href="<?= \yii\helpers\Url::to(['reports/exams']) ?>">Exam Coverage</a></li>
                             </ul>
                         </li>
-
-
-                        <li class="submenu">
-                            <a href="javascript:void(0);"><i data-feather="user-check"></i><span>User Management</span><span class="menu-arrow"></span></a>
-                            <ul>
-                                <li><a href="<?= \yii\helpers\Url::to(['user/index']) ?>">Users</a></li>
-                            </ul>
-                        </li>
-
-
 
                         <li class="submenu">
                             <a href="javascript:void(0);"><i data-feather="settings"></i><span>Settings</span><span class="menu-arrow"></span></a>

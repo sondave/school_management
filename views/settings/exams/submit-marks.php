@@ -75,8 +75,8 @@ $examOptionsUrl = Url::to(['exams/exam-options']);
                 </div>
 
                 <div class="mt-4 d-flex gap-2">
-                    <?= Html::button('Load Exams', ['class' => 'btn btn-outline-primary', 'id' => 'load-exams-button']) ?>
-                    <?= Html::submitButton('Open Student Marks', ['class' => 'btn btn-primary']) ?>
+                    <!-- <?= Html::button('Load Exams', ['class' => 'btn btn-outline-primary', 'id' => 'load-exams-button']) ?> -->
+                    <?= Html::submitButton('Open Student Marks', ['class' => 'btn btn-outline-primary']) ?>
                 </div>
             </form>
         </div>

@@ -19,7 +19,7 @@ class m260711_000012_create_teachers_table extends Migration
             'date_of_birth' => $this->date()->notNull(),
             'employment_type' => $this->string(20)->notNull(),
             'tsc_number' => $this->string(50)->null(),
-            'staff_number' => $this->string(50)->null(),
+            'first_appointment_date' => $this->date()->null(),
             'status' => $this->smallInteger()->notNull()->defaultValue(1),
             'created_at' => $this->dateTime()->null(),
             'created_by' => $this->integer()->null(),
@@ -31,12 +31,12 @@ class m260711_000012_create_teachers_table extends Migration
         $this->createIndex('idx-teachers-alternate_phone_number-unique', '{{%teachers}}', 'alternate_phone_number', true);
         $this->createIndex('idx-teachers-email_address-unique', '{{%teachers}}', 'email_address', true);
         $this->createIndex('idx-teachers-tsc_number-unique', '{{%teachers}}', 'tsc_number', true);
-        $this->createIndex('idx-teachers-staff_number-unique', '{{%teachers}}', 'staff_number', true);
+        
     }
 
     public function safeDown(): void
     {
-        $this->dropIndex('idx-teachers-staff_number-unique', '{{%teachers}}');
+
         $this->dropIndex('idx-teachers-tsc_number-unique', '{{%teachers}}');
         $this->dropIndex('idx-teachers-email_address-unique', '{{%teachers}}');
         $this->dropIndex('idx-teachers-alternate_phone_number-unique', '{{%teachers}}');

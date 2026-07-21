@@ -12,7 +12,7 @@ class m260711_000017_create_students_module_tables extends Migration
         $this->createTable('{{%st_students}}', [
             'id' => $this->primaryKey(),
             'upi' => $this->string(30)->null(),
-            'nemis_no' => $this->string(30)->null(),
+            'access_number' => $this->string(30)->null(),
             'first_name' => $this->string(100)->notNull(),
             'middle_name' => $this->string(100)->notNull(),
             'surname' => $this->string(100)->notNull(),
@@ -20,6 +20,10 @@ class m260711_000017_create_students_module_tables extends Migration
             'date_of_birth' => $this->date()->notNull(),
             'birth_cert_no' => $this->string(30)->null(),
             'admission_date' => $this->date()->null(),
+            'admission_type' => $this->string(30)->notNull()->defaultValue('new_admission'),
+            'transfered_from' => $this->string(100)->null(),
+            'transfered_to' => $this->string(100)->null(),
+            'has_special_needs' => $this->boolean()->notNull()->defaultValue(false),
             'status' => $this->integer()->null(),
             'created_at' => $this->dateTime()->null(),
             'created_by' => $this->integer()->null(),
@@ -28,7 +32,7 @@ class m260711_000017_create_students_module_tables extends Migration
         ]);
 
         $this->createIndex('uq-st_students-upi', '{{%st_students}}', 'upi', true);
-        $this->createIndex('uq-st_students-nemis_no', '{{%st_students}}', 'nemis_no', true);
+        $this->createIndex('uq-st_students-access_number', '{{%st_students}}', 'access_number', true);
         $this->createIndex('idx-st_students-gender_id', '{{%st_students}}', 'gender_id');
         $this->createIndex('idx-st_students-status', '{{%st_students}}', 'status');
 
@@ -169,7 +173,7 @@ class m260711_000017_create_students_module_tables extends Migration
         $this->dropForeignKey('fk-st_students-gender_id', '{{%st_students}}');
         $this->dropIndex('idx-st_students-status', '{{%st_students}}');
         $this->dropIndex('idx-st_students-gender_id', '{{%st_students}}');
-        $this->dropIndex('uq-st_students-nemis_no', '{{%st_students}}');
+        $this->dropIndex('uq-st_students-access_number', '{{%st_students}}');
         $this->dropIndex('uq-st_students-upi', '{{%st_students}}');
         $this->dropTable('{{%st_students}}');
     }

@@ -62,7 +62,9 @@ use yii\widgets\ActiveForm;
     <div class="row">
         <div class="col-md-4">
             <div class="mb-3">
-                <?= $form->field($model, 'date_of_birth')->input('date') ?>
+                <?= $form->field($model, 'date_of_birth')->input('date', [
+                    'max' => date('Y-m-d', strtotime('-18 years')),
+                ]) ?>
             </div>
         </div>
         <div class="col-md-4">
@@ -83,7 +85,9 @@ use yii\widgets\ActiveForm;
     <div class="row">
         <div class="col-md-4">
             <div class="mb-3">
-                <?= $form->field($model, 'staff_number')->textInput(['maxlength' => 50, 'placeholder' => 'Input staff number']) ?>
+                <?= $form->field($model, 'first_appointment_date')->input('date', [
+                    'max' => date('Y-m-d'),
+                ]) ?>
             </div>
         </div>
         <div class="col-md-4">

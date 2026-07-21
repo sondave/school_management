@@ -26,7 +26,7 @@ use yii\widgets\DetailView;
                 'value' => $model->getStatusLabel(),
             ],
             'tsc_number',
-            'staff_number',
+            'first_appointment_date:date',
             [
                 'attribute' => 'created_at',
                 'format' => 'datetime',
