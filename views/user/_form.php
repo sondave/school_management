@@ -68,13 +68,7 @@ use yii\bootstrap5\ActiveForm;
         <div class="col-md-4 mb-3">
             <?= $form->field($profile, 'branch_id')->dropDownList($branches, ['prompt' => 'Select branch', 'class' => 'form-select']) ?>
         </div>
-        <div class="col-md-4 mb-3">
-            <?= $form->field($profile, 'role')->dropDownList([
-                1 => 'Role 1',
-                2 => 'Role 2',
-                3 => 'Role 3',
-            ], ['prompt' => 'Select role', 'class' => 'form-select']) ?>
-        </div>
+
     </div>
 
     <div class="mt-3">

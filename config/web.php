@@ -60,6 +60,9 @@
         ],
         'components' => [
 
+            'authManager' => [
+                'class' => 'yii\rbac\DbManager',
+            ],
             
             'queue' => [
                 'class' => \yii\queue\db\Queue::class,
@@ -69,9 +72,7 @@
                 'mutex' => \yii\mutex\MysqlMutex::class,
             ],
 
-            'mpesa' => [
-                'class' => app\components\Mpesa::class,
-            ],
+          
 
             'sms' => [
                 'class' => app\components\Sms::class,

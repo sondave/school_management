@@ -20,7 +20,6 @@ use yii\db\Expression;
  * @property string $email
  * @property string|null $dob
  * @property int|null $branch_id
- * @property int|null $role
  * @property string|null $created_at
  * @property int|null $created_by
  * @property string|null $updated_at
@@ -58,7 +57,7 @@ class UserProfile extends ActiveRecord
     {
         return [
             [['first_name', 'other_names', 'gender', 'phone_number', 'email'], 'required'],
-            [['user_id', 'branch_id', 'role', 'created_by', 'updated_by'], 'integer'],
+            [['user_id', 'branch_id',  'created_by', 'updated_by'], 'integer'],
             [['dob', 'created_at', 'updated_at'], 'safe'],
             [['first_name', 'gender'], 'string', 'max' => 50],
             [['other_names'], 'string', 'max' => 100],
@@ -83,7 +82,6 @@ class UserProfile extends ActiveRecord
             'email' => 'Email',
             'dob' => 'Date of Birth',
             'branch_id' => 'Branch',
-            'role' => 'Role',
             'created_at' => 'Created At',
             'created_by' => 'Created By',
             'updated_at' => 'Updated At',

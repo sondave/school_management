@@ -12,7 +12,6 @@ class User extends ActiveRecord implements IdentityInterface
     public const STATUS_INACTIVE = 0;
     public const STATUS_ACTIVE = 1;
     public const STATUS_BLOCKED = 2;
-    public const STATUS_BANNED = 3;
 
     public static function tableName(): string
     {
@@ -26,7 +25,7 @@ class User extends ActiveRecord implements IdentityInterface
             [['username'], 'string', 'max' => 55],
             [['passwordHash', 'auth_key', 'access_token'], 'string', 'max' => 255],
             [['status', 'is_first_login', 'login_attempts'], 'integer'],
-            [['activation_pas_expires_at', 'last_login_at', 'blocked_banned_at'], 'safe'],
+            [['activation_pas_expires_at', 'last_login_at', 'blocked_at','activated_at'], 'safe'],
             [['remarks'], 'string', 'max' => 255],
             [['status'], 'default', 'value' => self::STATUS_INACTIVE],
             [['is_first_login'], 'default', 'value' => 1],
@@ -50,7 +49,8 @@ class User extends ActiveRecord implements IdentityInterface
             'last_login_at' => 'Last Login At',
             'login_attempts' => 'Login Attempts',
             'remarks' => 'Remarks',
-            'blocked_banned_at' => 'Blocked/Banned At',
+            'blocked_at' => 'Blocked At',
+            'activated_at' => 'Activated At',
         ];
     }
 
@@ -88,7 +88,6 @@ class User extends ActiveRecord implements IdentityInterface
             self::STATUS_INACTIVE => 'Not Activated',
             self::STATUS_ACTIVE => 'Active',
             self::STATUS_BLOCKED => 'Blocked',
-            self::STATUS_BANNED => 'Banned',
         ];
     }
 

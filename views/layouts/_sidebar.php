@@ -102,6 +102,15 @@
                             <a href="javascript:void(0);"><i data-feather="user-check"></i><span>User Management</span><span class="menu-arrow"></span></a>
                             <ul>
                                 <li><a href="<?= \yii\helpers\Url::to(['user/index']) ?>">Users</a></li>
+                                <li class="submenu submenu-two"><a href="javascript:void(0);" class=" subdrop"><span>Permissions</span><span class="menu-arrow inside-submenu"></span></a>
+                                    <ul>
+                                        <li><a href="<?= \yii\helpers\Url::to(['users/permission-groups/index']) ?>">Permission Groups</a></li>
+                                        <li><a href="<?= \yii\helpers\Url::to(['users/permissions/index']) ?>">Permission</a></li>
+                                        <li><a href="<?= \yii\helpers\Url::to(['users/roles/index']) ?>">Roles</a></li>
+                                    </ul>
+                                    
+                                </li>
+
                             </ul>
                         </li>
 

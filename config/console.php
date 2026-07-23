@@ -48,6 +48,10 @@ $config = [
             ],
         ],
 
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
+
         'queue' => [
             'class' => \yii\queue\db\Queue::class,
             'db' => 'db',
@@ -56,9 +60,7 @@ $config = [
             'mutex' => \yii\mutex\MysqlMutex::class,
         ],
 
-        'mpesa' => [
-            'class' => app\components\Mpesa::class,
-        ],
+
 
         'sms' => [
             'class' => app\components\Sms::class,
