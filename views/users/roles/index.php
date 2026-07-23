@@ -66,7 +66,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                 return '<span class="badge bg-secondary">None</span>';
                             }
 
-                            return '<span class="badge bg-info">' . count($model->permissionNames) . ' assigned</span>';
+                            return Html::a(
+                                '<span class="badge bg-info">' . count($model->permissionNames) . ' assigned</span>',
+                                'javascript:void(0);',
+                                [
+                                    'class' => 'role-permissions-button',
+                                    'data-url' => Url::to(['users/roles/permissions', 'id' => $model->name]),
+                                    'title' => 'View assigned permissions',
+                                ]
+                            );
                         },
                     ],
                     [
@@ -140,6 +148,22 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 </div>
 
+<div class="modal fade" id="role-permissions-modal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="role-permissions-modal-label">Assigned Permissions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body py-4" id="role-permissions-modal-body">
+                <div class="text-center py-3">
+                    <i class="fa fa-spinner fa-spin fa-2x text-muted"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php $this->registerJs(<<<'JS'
 function initRoleSelect2(modal) {
     var fields = modal.find('select.select2');
@@ -189,6 +213,18 @@ function openRoleViewModal(url) {
     });
 }
 
+function openRolePermissionsModal(url) {
+    var modal = $('#role-permissions-modal');
+    modal.find('#role-permissions-modal-body').html('<div class="text-center py-4">Loading...</div>');
+    modal.modal('show');
+
+    $.get(url).done(function (html) {
+        modal.find('#role-permissions-modal-body').html(html);
+    }).fail(function () {
+        modal.find('#role-permissions-modal-body').html('<div class="alert alert-danger">Unable to load assigned permissions.</div>');
+    });
+}
+
 function showRoleToast(message, type) {
     var icon = type === 'success' ? 'las la-check-circle' : 'las la-exclamation-circle';
     var toast = '<div class="toast align-items-center text-white bg-' + (type === 'success' ? 'success' : 'danger') + ' border-0" role="alert" aria-live="assertive" aria-atomic="true">'
@@ -221,6 +257,11 @@ $(document).on('click', '.role-update-button', function (e) {
 $(document).on('click', '.role-view-button', function (e) {
     e.preventDefault();
     openRoleViewModal($(this).data('url'));
+});
+
+$(document).on('click', '.role-permissions-button', function (e) {
+    e.preventDefault();
+    openRolePermissionsModal($(this).data('url'));
 });
 
 $(document).on('click', '.role-delete-button', function (e) {

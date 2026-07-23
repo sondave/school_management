@@ -63,3 +63,4 @@ use yii\widgets\DetailView;
         <?php endif; ?>
     </div>
 </div>
+

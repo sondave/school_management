@@ -59,6 +59,19 @@ class RolesController extends Controller
         ]);
     }
 
+    public function actionPermissions(string $id): string
+    {
+        if (Yii::$app->request->isAjax) {
+            return $this->renderAjax('permissions', [
+                'model' => $this->findModel($id),
+            ]);
+        }
+
+        return $this->render('permissions', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
     public function actionCreate(): Response|array|string
     {
         $model = new Role();
