@@ -8,7 +8,7 @@ use Yii;
 use app\models\Parents;
 use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
-use yii\web\Controller;
+use app\controllers\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 

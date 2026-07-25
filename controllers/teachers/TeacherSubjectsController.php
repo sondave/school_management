@@ -9,7 +9,7 @@ use app\models\TeacherSubject;
 use yii\data\ArrayDataProvider;
 use yii\db\Transaction;
 use yii\filters\VerbFilter;
-use yii\web\Controller;
+use app\controllers\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 

@@ -6,7 +6,7 @@ namespace app\controllers\operations;
 
 use app\models\operations\StockLevel;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
+use app\controllers\Controller;
 
 class StockLevelsController extends Controller
 {

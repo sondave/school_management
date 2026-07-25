@@ -6,7 +6,7 @@ use app\models\settings\SmsTemplate;
 use app\models\settings\SmsTemplateSearch;
 use Yii;
 use yii\filters\VerbFilter;
-use yii\web\Controller;
+use app\controllers\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 

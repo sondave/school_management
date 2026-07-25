@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace app\controllers\notifications;
 
+use app\controllers\Controller;
 use app\jobs\SendSmsJob;
 use app\models\Parents;
 use app\models\Student;
@@ -14,7 +15,7 @@ use app\models\settings\SmsTemplate;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\Exception;
-use yii\web\Controller;
+use app\controllers\Controller;
 use yii\web\Response;
 
 class SmsNotificationController extends Controller

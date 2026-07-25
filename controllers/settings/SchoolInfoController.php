@@ -7,7 +7,7 @@ namespace app\controllers\settings;
 use Yii;
 use app\models\settings\SchoolInfo;
 use yii\filters\VerbFilter;
-use yii\web\Controller;
+use app\controllers\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 

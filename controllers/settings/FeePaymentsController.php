@@ -14,7 +14,7 @@ use app\services\FeePaymentService;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
-use yii\web\Controller;
+use app\controllers\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 

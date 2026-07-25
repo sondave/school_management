@@ -12,7 +12,7 @@ use app\models\settings\Grade;
 use app\models\settings\Term;
 use app\models\StudentEnrollment;
 use Yii;
-use yii\web\Controller;
+use app\controllers\Controller;
 
 class ReportsController extends Controller
 {
