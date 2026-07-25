@@ -8,11 +8,10 @@ use Yii;
 use app\models\operations\InventoryItem;
 use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
-use app\controllers\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
-class InventoryItemsController extends Controller
+class InventoryItemsController extends \app\controllers\Controller
 {
     public function behaviors(): array
     {

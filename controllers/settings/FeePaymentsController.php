@@ -14,11 +14,10 @@ use app\services\FeePaymentService;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
-use app\controllers\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
-class FeePaymentsController extends Controller
+class FeePaymentsController extends \app\controllers\Controller
 {
     public function behaviors(): array
     {

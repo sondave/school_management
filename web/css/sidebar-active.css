@@ -1,0 +1,42 @@
+.sidebar .sidebar-menu > ul > li > a.active,
+.sidebar .sidebar-menu > ul > li.active > a,
+.sidebar .sidebar-menu > ul > li.submenu ul li > a.active,
+.sidebar .sidebar-menu > ul > li.submenu-open ul li > a.active,
+.sidebar .sidebar-menu > ul li .submenu > a.active,
+.sidebar .sidebar-menu > ul li .submenu .submenu-two > a.active {
+    background: transparent !important;
+    box-shadow: none !important;
+    color: inherit !important;
+    border-radius: 0 !important;
+}
+
+.sidebar .sidebar-menu > ul > li > a.active span,
+.sidebar .sidebar-menu > ul > li.active > a span,
+.sidebar .sidebar-menu > ul > li.submenu ul li > a.active span,
+.sidebar .sidebar-menu > ul > li.submenu-open ul li > a.active span,
+.sidebar .sidebar-menu > ul li .submenu > a.active span,
+.sidebar .sidebar-menu > ul li .submenu .submenu-two > a.active span,
+.sidebar .sidebar-menu > ul > li > a.active svg,
+.sidebar .sidebar-menu > ul > li.active > a svg,
+.sidebar .sidebar-menu > ul > li.submenu ul li > a.active svg,
+.sidebar .sidebar-menu > ul > li.submenu-open ul li > a.active svg,
+.sidebar .sidebar-menu > ul li .submenu > a.active svg,
+.sidebar .sidebar-menu > ul li .submenu .submenu-two > a.active svg,
+.sidebar .sidebar-menu > ul > li > a.active img,
+.sidebar .sidebar-menu > ul > li.active > a img,
+.sidebar .sidebar-menu > ul > li.submenu ul li > a.active img,
+.sidebar .sidebar-menu > ul > li.submenu-open ul li > a.active img,
+.sidebar .sidebar-menu > ul li .submenu > a.active img,
+.sidebar .sidebar-menu > ul li .submenu .submenu-two > a.active img {
+    color: inherit !important;
+    filter: none !important;
+}
+
+.sidebar .sidebar-menu > ul > li.submenu ul li > a.active::after,
+.sidebar .sidebar-menu > ul > li.submenu-open ul li > a.active::after,
+.sidebar .sidebar-menu > ul li .submenu > a.active::after,
+.sidebar .sidebar-menu > ul li .submenu .submenu-two > a.active::after {
+    content: none !important;
+    background: transparent !important;
+    border: 0 !important;
+}

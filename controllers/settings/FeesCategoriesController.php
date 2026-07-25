@@ -8,11 +8,10 @@ use app\models\settings\FeesCategory;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
-use app\controllers\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
-class FeesCategoriesController extends Controller
+class FeesCategoriesController extends \app\controllers\Controller
 {
     public function behaviors(): array
     {

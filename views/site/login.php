@@ -6,7 +6,6 @@
 
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
-use app\widgets\Alert;
 
 $htmlIcon = <<<HTML
 {label}<div class="input-group"><span class="input-group-text" aria-hidden="true">%s</span>{input}</div>{error}{hint}
@@ -25,8 +24,11 @@ $labelOptions = ['class' => 'form-label fw-semibold small'];
         </a>
     </div>
     <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
-        <?= Alert::widget(['options' => ['class' => 'mb-3']]) ?>
-        <?= $form->errorSummary($model, ['class' => 'alert alert-danger']) ?>
+        <?php if ($model->hasErrors()) : ?>
+            <div class="alert alert-danger mb-3" role="alert">
+                <?= Html::encode($model->getFirstError('password') ?: $model->getFirstError('username')) ?>
+            </div>
+        <?php endif; ?>
         <div class="login-userset">
             <div class="login-userheading">
                 <h3>Sign In</h3>
@@ -71,8 +73,8 @@ $labelOptions = ['class' => 'form-label fw-semibold small'];
 
                     <div class="col-6 text-end">
                         <?= \yii\helpers\Html::a(
-                            'Forgot Password?',
-                            ['site/request-password-reset'],
+                            'Activate Account',
+                            'javascript:void(0);',
                             ['class' => 'forgot-link']
                         ) ?>
                     </div>

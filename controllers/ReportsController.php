@@ -12,9 +12,8 @@ use app\models\settings\Grade;
 use app\models\settings\Term;
 use app\models\StudentEnrollment;
 use Yii;
-use app\controllers\Controller;
 
-class ReportsController extends Controller
+class ReportsController extends \app\controllers\Controller
 {
     public function actionIndex(): string
     {

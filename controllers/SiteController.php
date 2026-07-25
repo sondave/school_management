@@ -24,11 +24,10 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\base\Security;
 use yii\mail\MailerInterface;
-use app\controllers\Controller;
 use yii\web\ErrorAction;
 use yii\web\Response;
 
-class SiteController extends Controller
+class SiteController extends \app\controllers\Controller
 {
     public function __construct(
         $id,

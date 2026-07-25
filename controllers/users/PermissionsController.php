@@ -9,11 +9,10 @@ use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\IntegrityException;
 use yii\filters\VerbFilter;
-use app\controllers\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
-class PermissionsController extends Controller
+class PermissionsController extends \app\controllers\Controller
 {
     public function behaviors(): array
     {

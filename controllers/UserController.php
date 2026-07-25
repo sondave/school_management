@@ -14,12 +14,11 @@ use Yii;
 use yii\base\Exception;
 use yii\db\Transaction;
 use yii\filters\VerbFilter;
-use app\controllers\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 
-class UserController extends Controller
+class UserController extends \app\controllers\Controller
 {
     public function behaviors(): array
     {

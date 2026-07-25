@@ -25,20 +25,6 @@ class AppAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
-    public $css = [
-        'theme/css/bootstrap.min.css',
-        'theme/css/animate.css',
-		'theme/plugins/select2/css/select2.min.css',
-        'theme/css/dataTables.bootstrap5.min.css',
-        'https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css',
-        'theme/plugins/fontawesome/css/fontawesome.min.css',
-        'theme/plugins/fontawesome/css/all.min.css',
-        'theme/css/style.css',
-        // toast aleart
-        'theme/plugins/toastr/toatr.css'
-
-
-    ];
     public $js = [
         // jQuery
         'theme/js/jquery-3.7.1.min.js',
@@ -68,6 +54,19 @@ class AppAsset extends AssetBundle
         'theme/js/theme-script.js',
         'theme/js/script.js',
 
+    ];
+    public $css = [
+        'theme/css/bootstrap.min.css',
+        'theme/css/animate.css',
+		'theme/plugins/select2/css/select2.min.css',
+        'theme/css/dataTables.bootstrap5.min.css',
+        'https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css',
+        'theme/plugins/fontawesome/css/fontawesome.min.css',
+        'theme/plugins/fontawesome/css/all.min.css',
+        'theme/css/style.css',
+        // toast aleart
+        'theme/plugins/toastr/toatr.css',
+        'css/sidebar-active.css',
 
     ];
     public $jsOptions = [

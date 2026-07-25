@@ -6,11 +6,10 @@ use app\models\settings\SmsTemplate;
 use app\models\settings\SmsTemplateSearch;
 use Yii;
 use yii\filters\VerbFilter;
-use app\controllers\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
-class SmsTemplateController extends Controller
+class SmsTemplateController extends \app\controllers\Controller
 {
     public function behaviors()
     {

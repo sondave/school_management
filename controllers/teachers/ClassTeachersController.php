@@ -8,11 +8,10 @@ use Yii;
 use app\models\ClassTeacher;
 use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
-use app\controllers\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
-class ClassTeachersController extends Controller
+class ClassTeachersController extends \app\controllers\Controller
 {
     public function behaviors(): array
     {

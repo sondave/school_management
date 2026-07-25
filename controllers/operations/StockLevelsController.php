@@ -6,9 +6,8 @@ namespace app\controllers\operations;
 
 use app\models\operations\StockLevel;
 use yii\data\ActiveDataProvider;
-use app\controllers\Controller;
 
-class StockLevelsController extends Controller
+class StockLevelsController extends \app\controllers\Controller
 {
     public function actionIndex(): string
     {

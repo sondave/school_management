@@ -1,4 +1,12 @@
 <?php
+use yii\helpers\Url;
+
+$currentRoute = Yii::$app->controller->getRoute();
+
+function isSidebarRouteActive(string $route, string $currentRoute): bool
+{
+    return $route === $currentRoute || strpos($currentRoute, $route . '/') === 0;
+}
 ?>
 <div class="sidebar" id="sidebar">
     <div class="sidebar-inner slimscroll">
@@ -18,29 +26,29 @@
                 <li class="submenu-open">
                     <!-- <h6 class="submenu-hdr">Settings</h6>		 -->
                     <ul>
-                        <li>
+                        <li class="<?= isSidebarRouteActive('site/index', $currentRoute) ? 'active' : '' ?>">
                             <a href="<?= \yii\helpers\Url::to(['/']) ?>" ><i data-feather="grid"></i><span>Dashboard</span> </a>
                         </li>
 
                         
 
-                        <li>
+                        <li class="<?= isSidebarRouteActive('parents/index', $currentRoute) ? 'active' : '' ?>">
                             <a href="<?= \yii\helpers\Url::to(['parents/index']) ?>"><i data-feather="users"></i><span>Parents</span></a>
                         </li>
-                        <li>
+                        <li class="<?= isSidebarRouteActive('students/index', $currentRoute) ? 'active' : '' ?>">
                             <a href="<?= \yii\helpers\Url::to(['students/index']) ?>"><i data-feather="users"></i><span>Students</span></a>
                         </li>
-                        <li class="submenu">
+                        <li class="submenu <?= in_array($currentRoute, ['teachers/index', 'teachers/class-teachers/index', 'teachers/teacher-subjects/index'], true) ? 'active' : '' ?>">
                             <a href="javascript:void(0);"><i data-feather="book-open"></i><span>Teachers</span><span class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="<?= \yii\helpers\Url::to(['teachers/index']) ?>">Teachers</a></li>
-                                <li><a href="<?= \yii\helpers\Url::to(['teachers/class-teachers/index']) ?>">Class Teachers</a></li>
-                                <li><a href="<?= \yii\helpers\Url::to(['teachers/teacher-subjects/index']) ?>">Teacher Subjects</a></li>
+                                <li class="<?= $currentRoute === 'teachers/index' ? 'active' : '' ?>"><a href="<?= \yii\helpers\Url::to(['teachers/index']) ?>">Teachers</a></li>
+                                <li class="<?= $currentRoute === 'teachers/class-teachers/index' ? 'active' : '' ?>"><a href="<?= \yii\helpers\Url::to(['teachers/class-teachers/index']) ?>">Class Teachers</a></li>
+                                <li class="<?= $currentRoute === 'teachers/teacher-subjects/index' ? 'active' : '' ?>"><a href="<?= \yii\helpers\Url::to(['teachers/teacher-subjects/index']) ?>">Teacher Subjects</a></li>
                             </ul>
                         </li>
 
 
-                        <li class="submenu">
+                        <li class="submenu <?= in_array($currentRoute, ['operations/inventory-items/index', 'operations/inventory/index', 'operations/inventory-dispersal/index', 'operations/stock-levels/index'], true) ? 'active' : '' ?>">
                             <a href="javascript:void(0);"><i data-feather="clipboard"></i><span>Operations</span><span class="menu-arrow"></span></a>
                             <ul>
                             
@@ -51,10 +59,10 @@
                                         <li><a href="<?= \yii\helpers\Url::to(['operations/inventory-dispersal/index']) ?>">Inventory Dispersal</a></li>
                                     </ul>
                                 </li> -->
-                                <li><a href="<?= \yii\helpers\Url::to(['operations/inventory-items/index']) ?>">Inventory Items</a></li>
-                                <li><a href="<?= \yii\helpers\Url::to(['operations/inventory/index']) ?>">Inventory</a></li>
-                                <li><a href="<?= \yii\helpers\Url::to(['operations/inventory-dispersal/index']) ?>">Inventory Dispersal</a></li>
-                                <li><a href="<?= \yii\helpers\Url::to(['operations/stock-levels/index']) ?>">Stock Levels</a></li>
+                                <li class="<?= $currentRoute === 'operations/inventory-items/index' ? 'active' : '' ?>"><a href="<?= \yii\helpers\Url::to(['operations/inventory-items/index']) ?>">Inventory Items</a></li>
+                                <li class="<?= $currentRoute === 'operations/inventory/index' ? 'active' : '' ?>"><a href="<?= \yii\helpers\Url::to(['operations/inventory/index']) ?>">Inventory</a></li>
+                                <li class="<?= $currentRoute === 'operations/inventory-dispersal/index' ? 'active' : '' ?>"><a href="<?= \yii\helpers\Url::to(['operations/inventory-dispersal/index']) ?>">Inventory Dispersal</a></li>
+                                <li class="<?= $currentRoute === 'operations/stock-levels/index' ? 'active' : '' ?>"><a href="<?= \yii\helpers\Url::to(['operations/stock-levels/index']) ?>">Stock Levels</a></li>
 
                             </ul>
                         </li>
@@ -67,12 +75,12 @@
                         
                         
 
-                        <li class="submenu">
+                        <li class="submenu <?= isSidebarRouteActive('notifications/sms-notification', $currentRoute) ? 'active' : '' ?>">
                             <a href="javascript:void(0);"><i data-feather="bell"></i><span>Notifications</span><span class="menu-arrow"></span></a>
                             <ul>
 
 
-                                <li><a href="<?= \yii\helpers\Url::to(['notifications/sms-notification/index']) ?>">SMS Notifications</a></li>
+                                <li class="<?= $currentRoute === 'notifications/sms-notification/index' ? 'active' : '' ?>"><a href="<?= \yii\helpers\Url::to(['notifications/sms-notification/index']) ?>">SMS Notifications</a></li>
     
                             </ul>
                             
@@ -81,27 +89,27 @@
                         
 
 
-                        <li class="submenu">
+                        <li class="submenu <?= in_array($currentRoute, ['settings/fees-categories/index', 'settings/fees-structures/index', 'settings/fee-payments/index'], true) ? 'active' : '' ?>">
                             <a href="javascript:void(0);"><i data-feather="repeat"></i><span>School Fees</span><span class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="<?= \yii\helpers\Url::to(['settings/fees-categories/index']) ?>">Fees Categories</a></li>
-                                <li><a href="<?= \yii\helpers\Url::to(['settings/fees-structures/index']) ?>">Fees Structure</a></li>
-                                <li><a href="<?= \yii\helpers\Url::to(['settings/fee-payments/index']) ?>">Fee Payments</a></li>
+                                <li class="<?= $currentRoute === 'settings/fees-categories/index' ? 'active' : '' ?>"><a href="<?= \yii\helpers\Url::to(['settings/fees-categories/index']) ?>">Fees Categories</a></li>
+                                <li class="<?= $currentRoute === 'settings/fees-structures/index' ? 'active' : '' ?>"><a href="<?= \yii\helpers\Url::to(['settings/fees-structures/index']) ?>">Fees Structure</a></li>
+                                <li class="<?= $currentRoute === 'settings/fee-payments/index' ? 'active' : '' ?>"><a href="<?= \yii\helpers\Url::to(['settings/fee-payments/index']) ?>">Fee Payments</a></li>
                             </ul>
                         </li>
 
-                        <li class="submenu">
+                        <li class="submenu <?= in_array($currentRoute, ['exams/index', 'exams/submit-marks'], true) ? 'active' : '' ?>">
                             <a href="javascript:void(0);"><i data-feather="activity"></i><span>Exams</span><span class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="<?= \yii\helpers\Url::to(['exams/index']) ?>">Exams</a></li>
-                                <li><a href="<?= \yii\helpers\Url::to(['exams/submit-marks']) ?>">Submit Marks</a></li>
+                                <li class="<?= $currentRoute === 'exams/index' ? 'active' : '' ?>"><a href="<?= \yii\helpers\Url::to(['exams/index']) ?>">Exams</a></li>
+                                <li class="<?= $currentRoute === 'exams/submit-marks' ? 'active' : '' ?>"><a href="<?= \yii\helpers\Url::to(['exams/submit-marks']) ?>">Submit Marks</a></li>
                             </ul>
                         </li>
 
-                        <li class="submenu">
+                        <li class="submenu <?= in_array($currentRoute, ['user/index', 'users/permission-groups/index', 'users/permissions/index', 'users/roles/index'], true) ? 'active' : '' ?>">
                             <a href="javascript:void(0);"><i data-feather="user-check"></i><span>User Management</span><span class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="<?= \yii\helpers\Url::to(['user/index']) ?>">Users</a></li>
+                                <li class="<?= $currentRoute === 'user/index' ? 'active' : '' ?>"><a href="<?= \yii\helpers\Url::to(['user/index']) ?>">Users</a></li>
                                 <li class="submenu submenu-two"><a href="javascript:void(0);" class=" subdrop"><span>Permissions</span><span class="menu-arrow inside-submenu"></span></a>
                                     <ul>
                                         <li><a href="<?= \yii\helpers\Url::to(['users/permission-groups/index']) ?>">Permission Groups</a></li>
@@ -115,17 +123,17 @@
                         </li>
 
 
-                        <li class="submenu">
+                        <li class="submenu <?= in_array($currentRoute, ['reports/index', 'reports/students', 'reports/fees', 'reports/exams'], true) ? 'active' : '' ?>">
                             <a href="javascript:void(0);"><i data-feather="file-text"></i><span>Reports</span><span class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="<?= \yii\helpers\Url::to(['reports/index']) ?>">Reports Home</a></li>
-                                <li><a href="<?= \yii\helpers\Url::to(['reports/students']) ?>">Students By Grade</a></li>
-                                <li><a href="<?= \yii\helpers\Url::to(['reports/fees']) ?>">Fees Collection</a></li>
-                                <li><a href="<?= \yii\helpers\Url::to(['reports/exams']) ?>">Exam Coverage</a></li>
+                                <li class="<?= $currentRoute === 'reports/index' ? 'active' : '' ?>"><a href="<?= \yii\helpers\Url::to(['reports/index']) ?>">Reports Home</a></li>
+                                <li class="<?= $currentRoute === 'reports/students' ? 'active' : '' ?>"><a href="<?= \yii\helpers\Url::to(['reports/students']) ?>">Students By Grade</a></li>
+                                <li class="<?= $currentRoute === 'reports/fees' ? 'active' : '' ?>"><a href="<?= \yii\helpers\Url::to(['reports/fees']) ?>">Fees Collection</a></li>
+                                <li class="<?= $currentRoute === 'reports/exams' ? 'active' : '' ?>"><a href="<?= \yii\helpers\Url::to(['reports/exams']) ?>">Exam Coverage</a></li>
                             </ul>
                         </li>
 
-                        <li class="submenu">
+                        <li class="submenu <?= in_array($currentRoute, ['settings/exam-types/index', 'settings/school-info/index', 'settings/suppliers/index', 'settings/subjects/index', 'settings/lookup-values/index', 'settings/academic-years/index', 'settings/terms/index', 'settings/grades/index', 'settings/grade-subjects/index', 'settings/sms-template/index'], true) ? 'active' : '' ?>">
                             <a href="javascript:void(0);"><i data-feather="settings"></i><span>Settings</span><span class="menu-arrow"></span></a>
                             <ul>
             

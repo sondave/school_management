@@ -15,11 +15,10 @@ use app\models\StudentEnrollment;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
-use app\controllers\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
-class ExamsController extends Controller
+class ExamsController extends \app\controllers\Controller
 {
     public function getViewPath(): string
     {

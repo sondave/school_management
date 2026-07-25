@@ -8,11 +8,10 @@ use Yii;
 use app\models\settings\GradeSubject;
 use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
-use app\controllers\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
-class GradeSubjectsController extends Controller
+class GradeSubjectsController extends \app\controllers\Controller
 {
     public function behaviors(): array
     {

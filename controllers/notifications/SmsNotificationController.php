@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace app\controllers\notifications;
 
-use app\controllers\Controller;
 use app\jobs\SendSmsJob;
 use app\models\Parents;
 use app\models\Student;
@@ -15,10 +14,9 @@ use app\models\settings\SmsTemplate;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\Exception;
-use app\controllers\Controller;
 use yii\web\Response;
 
-class SmsNotificationController extends Controller
+class SmsNotificationController extends \app\controllers\Controller
 {
     public function actionIndex(): string|Response|array
     {

@@ -8,11 +8,10 @@ use app\models\operations\InventoryDispersal;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
-use app\controllers\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
-class InventoryDispersalController extends Controller
+class InventoryDispersalController extends \app\controllers\Controller
 {
     public function behaviors(): array
     {

@@ -97,10 +97,10 @@
             'user' => [
                 'identityClass' => \app\models\User::class,
                 'enableAutoLogin' => false,
-                'authTimeout' => 120,
+                'authTimeout' => 180, // 3 minutes
             ],
             'session' => [
-                'timeout' => 120,
+                'timeout' => 180, // 3 minutes
             ],
             'errorHandler' => [
                 'errorAction' => 'site/error',

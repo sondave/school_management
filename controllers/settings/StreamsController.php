@@ -8,11 +8,10 @@ use Yii;
 use app\models\settings\Stream;
 use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
-use app\controllers\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
-class StreamsController extends Controller
+class StreamsController extends \app\controllers\Controller
 {
     public function behaviors(): array
     {

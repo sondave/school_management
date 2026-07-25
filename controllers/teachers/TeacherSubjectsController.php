@@ -9,11 +9,10 @@ use app\models\TeacherSubject;
 use yii\data\ArrayDataProvider;
 use yii\db\Transaction;
 use yii\filters\VerbFilter;
-use app\controllers\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
-class TeacherSubjectsController extends Controller
+class TeacherSubjectsController extends \app\controllers\Controller
 {
     public function behaviors(): array
     {
