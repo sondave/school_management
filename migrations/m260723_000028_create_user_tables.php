@@ -17,6 +17,8 @@ class m260723_000028_create_user_tables extends Migration
             'auth_key' => $this->string(199)->notNull(),
             'access_token' => $this->string(199)->notNull(),
             'status' => $this->tinyInteger()->notNull()->defaultValue(0),
+            'is_first_login' => $this->tinyInteger()->notNull()->defaultValue(1),
+            'activation_pas_expires_at' => $this->dateTime()->null(),
             'login_attempts' => $this->tinyInteger()->notNull()->defaultValue(0),
             'last_login_at' => $this->dateTime()->null(),
             'blocked_at' => $this->dateTime()->null(),

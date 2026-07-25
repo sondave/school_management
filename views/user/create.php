@@ -5,7 +5,6 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\User $user */
 /** @var app\models\UserProfile $profile */
-/** @var array $branches */
 
 $this->title = 'Create User';
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
@@ -30,7 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $this->render('_form', [
                 'user' => $user,
                 'profile' => $profile,
-                'branches' => $branches,
             ]) ?>
         </div>
     </div>

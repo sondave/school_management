@@ -11,6 +11,11 @@
         'id' => 'basic',
         'basePath' => dirname(__DIR__),
         'bootstrap' => ['log'],
+        'components' => [
+            'assetManager' => [
+                'appendTimestamp' => true,
+            ],
+        ],
         'on beforeRequest' => static function () {
             if (PHP_SAPI === 'cli') {
                 return;

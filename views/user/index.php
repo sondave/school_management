@@ -43,6 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'columns' => [
                     ['class' => 'yii\\grid\\SerialColumn'],
                     'username',
+                    'email:email',
                     [
                         'label' => 'Name',
                         'value' => static function (User $model): string {
@@ -51,6 +52,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                 return '-';
                             }
                             return trim($profile->first_name . ' ' . $profile->other_names);
+                        },
+                    ],
+                    [
+                        'label' => 'Phone Number',
+                        'value' => static function (User $model): string {
+                            return $model->profile?->phone ?? '-';
                         },
                     ],
                     [
@@ -99,10 +106,19 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'data-title' => 'Ban User',
                                 ]);
 
-                                $items = '<li>' . $activate . '</li>';
-                                $items .= '<li>' . $resendActivationPassword . '</li>';
-                                $items .= '<li>' . $block . '</li>';
-                                $items .= '<li>' . $ban . '</li>';
+                                $view = Html::a('<i data-feather="eye" class="info-img"></i> View User', ['view', 'id' => $model->id], [
+                                    'class' => 'dropdown-item',
+                                ]);
+
+                                $items = '<li>' . $view . '</li>';
+
+                                if ((int) $model->status === User::STATUS_INACTIVE) {
+                                    $items .= '<li>' . $activate . '</li>';
+                                    $items .= '<li>' . $resendActivationPassword . '</li>';
+                                } elseif ((int) $model->status === User::STATUS_ACTIVE) {
+                                    $items .= '<li>' . $block . '</li>';
+                                    $items .= '<li>' . $ban . '</li>';
+                                }
 
                                 return Html::a('<i class="fa fa-ellipsis-v" aria-hidden="true"></i>', 'javascript:void(0);', [
                                     'class' => 'action-set',
@@ -192,7 +208,31 @@ $(document).on('click', '.user-activate-button', function (e) {
 
 $(document).on('click', '.user-resend-activation-button', function (e) {
     e.preventDefault();
-    submitUserAjaxAction($(this).data('url'), 'Activation password resent successfully and SMS queued.');
+    submitUserAjaxAction($(this).data('url'), 'Activation password regenerated successfully.');
+});
+
+$(document).on('submit', '#remarksForm', function (e) {
+    e.preventDefault();
+    var form = $(this);
+    var url = form.attr('action');
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: form.serialize(),
+        dataType: 'json'
+    }).done(function (res) {
+        if (res && res.success) {
+            $('#remarksModal').modal('hide');
+            showUserIndexToast(res.message || 'Operation successful.', 'success');
+            window.location.reload();
+            return;
+        }
+
+        showUserIndexToast((res && res.message) || 'Operation failed.', 'error');
+    }).fail(function (jqXHR) {
+        showUserIndexToast((jqXHR.responseJSON && jqXHR.responseJSON.message) ? jqXHR.responseJSON.message : 'Request failed.', 'error');
+    });
 });
 JS
 ); ?>

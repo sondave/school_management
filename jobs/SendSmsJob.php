@@ -10,6 +10,7 @@ use app\models\notifications\SmsNotification;
 class SendSmsJob extends BaseObject implements JobInterface
 {
     public $smsId;
+    public $passType;
 
     public function execute($queue)
     {
@@ -34,7 +35,8 @@ class SendSmsJob extends BaseObject implements JobInterface
         $smsComponent = Yii::$app->sms;
         $result = $smsComponent->send(
             $sms->phone_number,
-            $sms->message
+            $sms->message,
+            $this->passType
         );
 
         Yii::info([

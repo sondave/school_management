@@ -60,15 +60,33 @@ foreach ($templates as $template) {
                 'layout' => "<div class='table-responsive'>{items}</div><div class='d-flex justify-content-between align-items-center mt-3'>{summary}{pager}</div>",
                 'columns' => [
                     ['class' => 'yii\\grid\\SerialColumn'],
-                    'tracking_id',
+                    [
+                        'attribute' => 'tracking_id',
+                        'format' => 'raw',
+                        'value' => static function (SmsNotification $row): string {
+                            return Html::a(Html::encode((string) $row->tracking_id), 'javascript:void(0);', [
+                                'class' => 'sms-notification-details-link',
+                                'data-tracking-id' => Html::encode((string) $row->tracking_id),
+                                'data-phone' => Html::encode((string) $row->phone_number),
+                                'data-recipient-type' => Html::encode((string) (SmsNotificationDispatchForm::getRecipientTypeOptions()[$row->recipient_type] ?? (string) $row->recipient_type)),
+                                'data-template' => Html::encode((string) ($row->template?->getNameLabel() ?? '-')),
+                                'data-status' => Html::encode((string) $row->getStatusLabel()),
+                                'data-created-at' => Html::encode((string) $row->created_at),
+                                'data-message' => Html::encode(trim((string) $row->message)),
+                                'data-bs-toggle' => 'modal',
+                                'data-bs-target' => '#sms-notification-details-modal',
+                            ]);
+                        },
+                    ],
                     [
                         'attribute' => 'phone_number',
                         'label' => 'Phone',
                     ],
                     [
-                        'attribute' => 'recipient_type',
+                        'attribute' => 'message',
+                        'label' => 'Message',
                         'value' => static function (SmsNotification $row): string {
-                            return SmsNotificationDispatchForm::getRecipientTypeOptions()[$row->recipient_type] ?? (string) $row->recipient_type;
+                            return trim((string) $row->message);
                         },
                     ],
                     [
@@ -94,6 +112,41 @@ foreach ($templates as $template) {
                     'created_at:datetime',
                 ],
             ]) ?>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="sms-notification-details-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">SMS Notification Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Tracking ID</dt>
+                    <dd class="col-sm-8" id="sms-notification-details-tracking-id">-</dd>
+
+                    <dt class="col-sm-4">Phone</dt>
+                    <dd class="col-sm-8" id="sms-notification-details-phone">-</dd>
+
+                    <dt class="col-sm-4">Recipient Type</dt>
+                    <dd class="col-sm-8" id="sms-notification-details-recipient-type">-</dd>
+
+                    <dt class="col-sm-4">Template</dt>
+                    <dd class="col-sm-8" id="sms-notification-details-template">-</dd>
+
+                    <dt class="col-sm-4">Status</dt>
+                    <dd class="col-sm-8" id="sms-notification-details-status">-</dd>
+
+                    <dt class="col-sm-4">Created At</dt>
+                    <dd class="col-sm-8" id="sms-notification-details-created-at">-</dd>
+
+                    <dt class="col-sm-4">Message</dt>
+                    <dd class="col-sm-8"><pre class="mb-0" id="sms-notification-details-message">-</pre></dd>
+                </dl>
+            </div>
         </div>
     </div>
 </div>
@@ -192,6 +245,18 @@ $this->registerJs(<<<JS
     var messageField = $('#smsnotificationdispatchform-message');
     var paramsHint = $('#template-params-hint');
     var modalElement = document.getElementById('sms-dispatch-modal');
+
+    $(document).on('click', '.sms-notification-details-link', function (e) {
+        e.preventDefault();
+        var link = $(this);
+        $('#sms-notification-details-tracking-id').text(link.data('tracking-id') || '-');
+        $('#sms-notification-details-phone').text(link.data('phone') || '-');
+        $('#sms-notification-details-recipient-type').text(link.data('recipient-type') || '-');
+        $('#sms-notification-details-template').text(link.data('template') || '-');
+        $('#sms-notification-details-status').text(link.data('status') || '-');
+        $('#sms-notification-details-created-at').text(link.data('created-at') || '-');
+        $('#sms-notification-details-message').text(link.data('message') || '-');
+    });
 
     function updateRecipientFields() {
         var value = recipientField.val();

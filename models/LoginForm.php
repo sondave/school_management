@@ -82,9 +82,9 @@ class LoginForm extends Model
 
             if ((int) $user->login_attempts >= 3) {
                 $user->status = User::STATUS_BLOCKED;
-                $user->blocked_banned_at = date('Y-m-d H:i:s');
+                $user->blocked_at = date('Y-m-d H:i:s');
                 $user->remarks = '3 wrong login attempts';
-                $user->save(false, ['login_attempts', 'status', 'blocked_banned_at', 'remarks']);
+                $user->save(false, ['login_attempts', 'status', 'blocked_at', 'remarks']);
                 $this->addError('password', 'Your account is currently blocked after 3 wrong login attempts.');
                 return false;
             }

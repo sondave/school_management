@@ -13,7 +13,7 @@ class UserSearch extends User
     {
         return [
             [['id', 'status', 'is_first_login', 'login_attempts'], 'integer'],
-            [['username', 'remarks', 'activation_pas_expires_at', 'last_login_at', 'blocked_banned_at', 'full_name'], 'safe'],
+            [['username', 'email', 'remarks', 'activation_pas_expires_at', 'last_login_at', 'blocked_at', 'full_name'], 'safe'],
         ];
     }
 
@@ -33,6 +33,7 @@ class UserSearch extends User
                 'attributes' => [
                     'id',
                     'username',
+                    'email',
                     'status',
                     'is_first_login',
                     'login_attempts',
@@ -60,6 +61,7 @@ class UserSearch extends User
         ]);
 
         $query->andFilterWhere(['like', 'u.username', $this->username])
+            ->andFilterWhere(['like', 'u.email', $this->email])
             ->andFilterWhere(['like', 'u.remarks', $this->remarks]);
 
         if (!empty($this->full_name)) {

@@ -12,6 +12,7 @@ class User extends ActiveRecord implements IdentityInterface
     public const STATUS_INACTIVE = 0;
     public const STATUS_ACTIVE = 1;
     public const STATUS_BLOCKED = 2;
+    public const STATUS_BANNED = 3;
 
     public static function tableName(): string
     {
@@ -21,17 +22,22 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules(): array
     {
         return [
-            [['username', 'passwordHash', 'auth_key', 'access_token'], 'required'],
+            [['username', 'email', 'password_hash', 'auth_key', 'access_token'], 'required'],
             [['username'], 'string', 'max' => 55],
-            [['passwordHash', 'auth_key', 'access_token'], 'string', 'max' => 255],
+            [['email'], 'string', 'max' => 100],
+            [['password_hash'], 'string', 'max' => 150],
+            [['auth_key', 'access_token'], 'string', 'max' => 199],
             [['status', 'is_first_login', 'login_attempts'], 'integer'],
-            [['activation_pas_expires_at', 'last_login_at', 'blocked_at','activated_at'], 'safe'],
-            [['remarks'], 'string', 'max' => 255],
+            [['activation_pas_expires_at', 'last_login_at', 'blocked_at', 'activated_at', 'created_at', 'updated_at'], 'safe'],
+            [['created_by', 'updated_by'], 'integer'],
+            [['remarks'], 'string'],
             [['status'], 'default', 'value' => self::STATUS_INACTIVE],
             [['is_first_login'], 'default', 'value' => 1],
             [['login_attempts'], 'default', 'value' => 0],
             [['status'], 'in', 'range' => array_keys(self::getStatusList())],
             [['username'], 'unique'],
+            [['email'], 'email'],
+            [['email'], 'unique'],
         ];
     }
 
@@ -40,7 +46,8 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             'id' => 'ID',
             'username' => 'Username',
-            'passwordHash' => 'Password Hash',
+            'email' => 'Email',
+            'password_hash' => 'Password Hash',
             'auth_key' => 'Auth Key',
             'access_token' => 'Access Token',
             'status' => 'Status',
@@ -51,6 +58,10 @@ class User extends ActiveRecord implements IdentityInterface
             'remarks' => 'Remarks',
             'blocked_at' => 'Blocked At',
             'activated_at' => 'Activated At',
+            'created_at' => 'Created At',
+            'created_by' => 'Created By',
+            'updated_at' => 'Updated At',
+            'updated_by' => 'Updated By',
         ];
     }
 
@@ -88,6 +99,7 @@ class User extends ActiveRecord implements IdentityInterface
             self::STATUS_INACTIVE => 'Not Activated',
             self::STATUS_ACTIVE => 'Active',
             self::STATUS_BLOCKED => 'Blocked',
+            self::STATUS_BANNED => 'Banned',
         ];
     }
 
@@ -99,6 +111,26 @@ class User extends ActiveRecord implements IdentityInterface
     public function getProfile()
     {
         return $this->hasOne(UserProfile::class, ['user_id' => 'id']);
+    }
+
+    public function getPasswordHash(): ?string
+    {
+        return $this->password_hash;
+    }
+
+    public function setPasswordHash(string $passwordHash): void
+    {
+        $this->password_hash = $passwordHash;
+    }
+
+    public function getBlockedBannedAt(): ?string
+    {
+        return $this->blocked_at;
+    }
+
+    public function setBlockedBannedAt(?string $value): void
+    {
+        $this->blocked_at = $value;
     }
 
     /**

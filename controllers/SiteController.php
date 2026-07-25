@@ -183,8 +183,8 @@ class SiteController extends Controller
             return $this->redirect(['site/login']);
         }
 
-        if ((int) $user->status !== User::STATUS_ACTIVE) {
-            Yii::$app->session->setFlash('error', 'Account is not active for password setup.');
+        if ((int) $user->status === User::STATUS_BLOCKED || (int) $user->status === User::STATUS_BANNED) {
+            Yii::$app->session->setFlash('error', 'Account is not eligible for password setup.');
             return $this->redirect(['site/login']);
         }
 

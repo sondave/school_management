@@ -6,7 +6,6 @@ use yii\bootstrap5\ActiveForm;
 /** @var yii\web\View $this */
 /** @var app\models\User $user */
 /** @var app\models\UserProfile $profile */
-/** @var array $branches */
 ?>
 
 <div class="user-form">
@@ -32,17 +31,20 @@ use yii\bootstrap5\ActiveForm;
 
     <div class="row">
         <div class="col-md-4 mb-3">
-            <?= $form->field($user, 'username')->textInput(['maxlength' => true, 'placeholder' => 'Enter username']) ?>
+            <?= $form->field($user, 'username')->textInput(['maxlength' => true, 'placeholder' => 'Enter username', 'oninput' => 'this.value = this.value.toLowerCase()']) ?>
         </div>
         <div class="col-md-4 mb-3">
-            <?= $form->field($profile, 'first_name')->textInput(['maxlength' => true, 'placeholder' => 'Enter first name']) ?>
+            <?= $form->field($user, 'email')->textInput(['maxlength' => true, 'placeholder' => 'Enter email', 'oninput' => 'this.value = this.value.toLowerCase()']) ?>
         </div>
         <div class="col-md-4 mb-3">
-            <?= $form->field($profile, 'other_names')->textInput(['maxlength' => true, 'placeholder' => 'Enter other names']) ?>
+            <?= $form->field($profile, 'first_name')->textInput(['maxlength' => true, 'placeholder' => 'Enter first name', 'oninput' => 'this.value = this.value.replace(/\b\w/g, function(char){ return char.toUpperCase(); })']) ?>
         </div>
     </div>
 
     <div class="row">
+        <div class="col-md-4 mb-3">
+            <?= $form->field($profile, 'other_names')->textInput(['maxlength' => true, 'placeholder' => 'Enter other names', 'oninput' => 'this.value = this.value.replace(/\b\w/g, function(char){ return char.toUpperCase(); })']) ?>
+        </div>
         <div class="col-md-4 mb-3">
             <?= $form->field($profile, 'gender')->dropDownList([
                 'Male' => 'Male',
@@ -51,10 +53,7 @@ use yii\bootstrap5\ActiveForm;
             ], ['prompt' => 'Select gender', 'class' => 'form-select']) ?>
         </div>
         <div class="col-md-4 mb-3">
-            <?= $form->field($profile, 'phone_number')->textInput(['maxlength' => true, 'placeholder' => 'Enter phone number']) ?>
-        </div>
-        <div class="col-md-4 mb-3">
-            <?= $form->field($profile, 'email')->textInput(['maxlength' => true, 'placeholder' => 'Enter email']) ?>
+            <?= $form->field($profile, 'phone')->textInput(['maxlength' => true, 'placeholder' => 'Enter phone number']) ?>
         </div>
     </div>
 
@@ -65,10 +64,6 @@ use yii\bootstrap5\ActiveForm;
                     'max' => date('Y-m-d', strtotime('-18 years')),
                 ]) ?>
         </div>
-        <div class="col-md-4 mb-3">
-            <?= $form->field($profile, 'branch_id')->dropDownList($branches, ['prompt' => 'Select branch', 'class' => 'form-select']) ?>
-        </div>
-
     </div>
 
     <div class="mt-3">

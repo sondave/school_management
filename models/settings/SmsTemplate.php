@@ -51,6 +51,8 @@ class SmsTemplate extends ActiveRecord
 
     // Define your fixed structural groups
     const GROUP_PARENTS = 'PARENTS';
+    const GROUP_TEACHERS = 'TEACHERS';
+    const GROUP_USERS = 'USERS';
 
 
     /**
@@ -69,6 +71,13 @@ class SmsTemplate extends ActiveRecord
                 self::GROUP_PARENTS . '_SCHOOL_CLOSING_DATE_ALERT' => 'School Closing Date Alert',
                 self::GROUP_PARENTS . '_STUDENT_SCHOOL_FEES_AREARS_ALERT' => 'Student School Fees Arears Alert',
 
+            ],
+
+            'Users SMS Configurations' => [
+                self::GROUP_USERS . '_USER_ACTIVATION_ALERT' => 'User Activation Alert',
+                self::GROUP_USERS . '_USER_ACTIVATION_RESEND_ALERT' => 'User Activation Resend Alert',
+                self::GROUP_USERS . '_USER_EXPIRED_ACTIVATION_ALERT' => 'User Expired Activation Alert',
+                self::GROUP_USERS . '_USER_PASSWORD_RESET_ALERT' => 'User Password Reset Alert',
             ],
             
                
@@ -106,7 +115,12 @@ class SmsTemplate extends ActiveRecord
         if (strpos($this->name, 'PARENTS_') === 0) {
             return 'Parents';
         }
-        
+        if (strpos($this->name, 'TEACHERS_') === 0) {
+            return 'Teachers';
+        }
+        if (strpos($this->name, 'USERS_') === 0) {
+            return 'Users';
+        }
 
     }
     
