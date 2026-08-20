@@ -5,6 +5,7 @@ use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
@@ -46,6 +47,19 @@ $this->params['breadcrumbs'][] = $this->title;
                     'class' => 'table datanew no-footer table-hover',
                 ],
                 'layout' => "<div class='table-responsive custom-table-card'>\n{items}\n</div>\n<div class='d-flex justify-content-between align-items-center mt-3'>{summary}\n{pager}</div>",
+                'pager' => [
+                    'class' => LinkPager::class,
+                    'options' => ['class' => 'pagination justify-content-end mb-0'],
+                    'linkOptions' => ['class' => 'page-link'],
+                    'pageCssClass' => 'page-item',
+                    'prevPageCssClass' => 'page-item previous',
+                    'nextPageCssClass' => 'page-item next',
+                    'disabledPageCssClass' => 'disabled page-item',
+                    'activePageCssClass' => 'active',
+                    'prevPageLabel' => '',
+                    'nextPageLabel' => '',
+                    'maxButtonCount' => 5,
+                ],
                 'columns' => [
                     ['class' => 'yii\\grid\\SerialColumn'],
                     'first_name',

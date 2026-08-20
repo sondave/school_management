@@ -5,6 +5,7 @@ use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
@@ -46,6 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'class' => 'table datanew no-footer table-hover',
                 ],
                 'layout' => "<div class='table-responsive custom-table-card'>\n{items}\n</div>\n<div class='d-flex justify-content-between align-items-center mt-3'>{summary}\n{pager}</div>",
+                
                 'columns' => [
                     ['class' => 'yii\\grid\\SerialColumn'],
                     [
@@ -58,11 +60,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             ]);
                         },
                     ],
+                    'phone_no',
+                    'national_id',
+                    'email:email',
                     [
                         'attribute' => 'gender',
                         'value' => static fn(Parents $model): string => $model->getGenderLabel(),
                     ],
-                    'phone_no',
+                    
                     [
                         'attribute' => 'county',
                         'value' => static fn(Parents $model): string => $model->getCountyLabel(),

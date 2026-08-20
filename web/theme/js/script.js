@@ -112,8 +112,9 @@ function initDataNewTables($scope) {
 
 		$table.DataTable({
 			"bFilter": true,
-			"sDom": domLayout,
-			"ordering": true,
+			// "sDom": domLayout,
+			"ordering": false,
+			"paging": false,
 			"language": {
 				search: ' ',
 				sLengthMenu: '_MENU_',
